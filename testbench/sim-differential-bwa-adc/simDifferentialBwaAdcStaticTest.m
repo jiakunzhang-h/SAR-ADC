@@ -15,8 +15,8 @@ p = configDynamicTest();
 
 %% generate CDAC array
 
-positiveCapArray = genCbwCdac( p );
-negativeCapArray = genCbwCdac( p );
+positiveCapArray = genBwaCdac( p );
+negativeCapArray = genBwaCdac( p );
 
 %% code density method
 
@@ -35,7 +35,7 @@ codeDensityIdealDacOutput = nan( numTotalCodeDensitySamples, 1 );
 for iSample = 1 : numTotalCodeDensitySamples
   samplePositive = sineWave.positiveInput( iSample );
   sampleNegative = sineWave.negativeInput( iSample );
-  conversionCodeDensityResult( iSample, : ) = differentialCbwSarAdc( samplePositive, sampleNegative, p, positiveCapArray, negativeCapArray );
+  conversionCodeDensityResult( iSample, : ) = differentialBwaSarAdc( samplePositive, sampleNegative, p, positiveCapArray, negativeCapArray );
   codeDensityIdealDacOutput( iSample ) = idealDAC( conversionCodeDensityResult( iSample, : ) );
 end
 
@@ -49,8 +49,8 @@ adcCodeDensityStaticPerformanceMetrics = processDifferentialAdcTransitionData( p
 
 %% export plots
 
-drawingDnl = 'drawing/differential-cbw-adc-dnl.png';
+drawingDnl = 'drawing/differential-bwa-adc-dnl.png';
 exportgraphics( dnlObj, drawingDnl );
-drawingInl = 'drawing/differential-cbw-adc-inl.png';
+drawingInl = 'drawing/differential-bwa-adc-inl.png';
 exportgraphics( inlObj, drawingInl );
 

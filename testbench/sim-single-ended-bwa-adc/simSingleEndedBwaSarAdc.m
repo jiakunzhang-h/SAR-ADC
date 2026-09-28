@@ -54,3 +54,5 @@ drawingSpectrum = 'drawing/bwa-adc-spectrum.png';
 exportgraphics( obj, drawingSpectrum );
 drawingTrace = 'drawing/bwa-cdac-conversion.png';
 exportgraphics( traceObj, drawingTrace);
+
+

@@ -20,23 +20,26 @@ parfor iMonteCarlo = 1 : p.numMonteCarlo
 
   %% load single simulation configuration and parameters
 
-  conversionResult = nan( p.fftLen, p.adcResolution );
+  conversionResult = nan( p.fftLen, p.adcResolution + 1 );
   singleIdealDacOutput = nan( p.fftLen, 1 );
 
   %% generate samples
 
-  samples = genSamples( p );
+  samples = genDifferentialSamples( p );
+
   toneBin( iMonteCarlo ) = samples.toneBin;
 
   %% generate CDAC array
 
-  capArray = genBwaCdac( p );
+  positiveCapArray = genSbwCdac( p );
+  negativeCapArray = genSbwCdac( p );
 
   %% run simulation
 
   for iSample = 1 : p.fftLen
-    sample = samples.data( iSample );
-    conversionResult( iSample, : ) = bwaSarAdc( sample, p, capArray );
+    samplePositive = samples.positiveInput( iSample );
+    sampleNegative = samples.negativeInput( iSample );
+    conversionResult( iSample, : ) = differentialSbwSarAdc( samplePositive, sampleNegative, p, positiveCapArray, negativeCapArray );
     singleIdealDacOutput( iSample ) = idealDAC( conversionResult( iSample, : ) );
   end
 
@@ -54,6 +57,6 @@ mcObj = plotMonteCarlo( p, adcDynamicPerformanceMetrics.enobResult );
 
 %% export plots
 
-drawing = 'drawing/bwa-monte-carlo-enob-distribution.png';
+drawing = 'drawing/differential-sbw-monte-carlo-enob-distribution.png';
 exportgraphics( mcObj, drawing );
 

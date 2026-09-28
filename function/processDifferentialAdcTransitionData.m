@@ -1,4 +1,4 @@
-function adcStaticPerformanceMetrics = processAdcTransitionData( p, sineWave, conversionResult )
+function adcStaticPerformanceMetrics = processDifferentialAdcTransitionData( p, sineWave, conversionResult )
 
   %% calculate LSB
 
@@ -6,7 +6,7 @@ function adcStaticPerformanceMetrics = processAdcTransitionData( p, sineWave, co
 
   %% find actual hits of each code
 
-  edges = -0.5 : 1 : 2 .^  p.adcResolution - 0.5;
+  edges = -0.5 : 1 : 2 .^ ( p.adcResolution + 1 ) - 0.5;
   codeCount = histcounts( conversionResult, edges );
 
   %% compile cumulative histogram
@@ -15,7 +15,7 @@ function adcStaticPerformanceMetrics = processAdcTransitionData( p, sineWave, co
 
   %% determine transition voltage
 
-  transitionVoltage = p.vcm - p.inputAmplitude * cos( pi * cumCount( 1 : end - 1 ) / sineWave.numOfSamples );
+  transitionVoltage = - p.inputAmplitude * cos( pi * cumCount( 1 : end - 1 ) / sineWave.numOfSamples );
 
   %% calculate DNL and INL
 
@@ -27,7 +27,7 @@ function adcStaticPerformanceMetrics = processAdcTransitionData( p, sineWave, co
 
   adcStaticPerformanceMetrics.dnlResult = dnlResult;
   adcStaticPerformanceMetrics.inlResult = inlResult;
-  adcStaticPerformanceMetrics.dnlCodeIndex = 1 : 2 .^ p.adcResolution - 2;
-  adcStaticPerformanceMetrics.inlCodeIndex = 1 : 2 .^ p.adcResolution - 2;
+  adcStaticPerformanceMetrics.dnlCodeIndex = 1 : 2 .^ ( p.adcResolution + 1 ) - 2;
+  adcStaticPerformanceMetrics.inlCodeIndex = 1 : 2 .^ ( p.adcResolution + 1 ) - 2;
 
 end

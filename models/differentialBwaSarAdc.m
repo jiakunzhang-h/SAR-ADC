@@ -1,4 +1,4 @@
-function [conversionResult, cdacTrace] = differentialCbwSarAdc( samplePositive, sampleNegative, p, positiveCapArray, negativeCapArray )
+function [conversionResult, cdacTrace] = differentialBwaSarAdc( samplePositive, sampleNegative, p, positiveCapArray, negativeCapArray )
 
   %% SAR logic initialization
 
@@ -43,11 +43,11 @@ function [conversionResult, cdacTrace] = differentialCbwSarAdc( samplePositive, 
 
     %% CDAC
 
-    [positiveVin, positiveCdacVoltage] = cbwTopSampleCdac( samplePositive, p, positiveCapArray, positiveControl );
-    [negativeVin, negativeCdacVoltage] = cbwTopSampleCdac( sampleNegative, p, negativeCapArray, negativeControl );
+    [positiveVin, positiveCdacVoltage] = bwaTopSampleCdac( samplePositive, p, positiveCapArray, positiveControl );
+    [negativeVin, negativeCdacVoltage] = bwaTopSampleCdac( sampleNegative, p, negativeCapArray, negativeControl );
 
     %% save CDAC voltage
-    
+
     if nargout > 1
       cdacTrace( iCycle, 1 ) = positiveCdacVoltage;
       cdacTrace( iCycle, 2 ) = negativeCdacVoltage;
