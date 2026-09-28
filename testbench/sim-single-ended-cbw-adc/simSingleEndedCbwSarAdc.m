@@ -53,6 +53,6 @@ traceObj = plotCdacTrace( p, samples, randomTrace, randomIndex );
 drawingSpectrum = 'drawing/single-ended-cbw-adc-spectrum.png';
 exportgraphics( obj, drawingSpectrum );
 drawingTrace = 'drawing/single-ended-cbw-cdac-conversion.png';
-exportgraphics( traceObj, drawingTrace);
+exportgraphics( traceObj, drawingTrace );
 
 

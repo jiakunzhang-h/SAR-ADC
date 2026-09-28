@@ -4,20 +4,20 @@ function capArray = genBwaCdac( p )
 
   switch p.dacTopology
     case 'split-array_type-1'
-      mainArrayExponent = p.mainArraySize-1 : -1 : 0;
-      subArrayExponent = [p.subArraySize-1 : -1 : 0, 0];
+      mainArrayExponent = p.mainArraySize - 1 : -1 : 0;
+      subArrayExponent = [p.subArraySize - 1 : -1 : 0, 0];
       mainArrayCapWeight = 2 .^ mainArrayExponent;
       subArrayCapWeight = 2 .^ subArrayExponent;
       capWeight = [mainArrayCapWeight, subArrayCapWeight, p.bridgeCapWeight];
     case 'split-array_type-2'
-      mainArrayExponent = [p.mainArraySize-1 : -1 : 0, 0];
-      subArrayExponent = p.subArraySize-1 : -1 : 0;
+      mainArrayExponent = [p.mainArraySize - 1 : -1 : 0, 0];
+      subArrayExponent = p.subArraySize - 1 : -1 : 0;
       mainArrayCapWeight = 2 .^ mainArrayExponent;
       subArrayCapWeight = 2 .^ subArrayExponent;
       capWeight = [mainArrayCapWeight, subArrayCapWeight, p.bridgeCapWeight];
     case 'split-array_type-3'
-      mainArrayExponent = p.mainArraySize-1 : -1 : 0;
-      subArrayExponent = p.subArraySize-1 : -1 : 0;
+      mainArrayExponent = p.mainArraySize - 1 : -1 : 0;
+      subArrayExponent = p.subArraySize - 1 : -1 : 0;
       mainArrayCapWeight = 2 .^ mainArrayExponent;
       subArrayCapWeight = 2 .^ subArrayExponent;
       capWeight = [mainArrayCapWeight, subArrayCapWeight, p.bridgeCapWeight];
