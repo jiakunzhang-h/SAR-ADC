@@ -71,8 +71,8 @@ adcCodeDensityStaticPerformanceMetrics = processAdcTransitionData( p, sineWave, 
 
 %% export plots
 
-drawingDnl = 'drawing/sbw-adc-dnl-comparison.png';
+drawingDnl = 'drawing/single-ended-sbw-adc-dnl-comparison.png';
 exportgraphics( dnlObj, drawingDnl );
-drawingInl = 'drawing/sbw-adc-inl-comparison.png';
+drawingInl = 'drawing/single-ended-sbw-adc-inl-comparison.png';
 exportgraphics( inlObj, drawingInl );
 

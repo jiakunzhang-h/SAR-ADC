@@ -54,6 +54,6 @@ mcObj = plotMonteCarlo( p, adcDynamicPerformanceMetrics.enobResult );
 
 %% export plots
 
-drawing = 'drawing/cbw-monte-carlo-enob-distribution.png';
+drawing = 'drawing/single-ended-cbw-monte-carlo-enob-distribution.png';
 exportgraphics( mcObj, drawing );
 

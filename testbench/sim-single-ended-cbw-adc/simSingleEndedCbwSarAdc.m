@@ -46,13 +46,13 @@ obj = plotAdcDynamicSimulationResult( p, adcDynamicPerformanceMetrics );
 randomIndex = randi( p.fftLen );
 randomTrace = cdacTrace( randomIndex, : );
 randomSample = samples.data( randomIndex );
-traceObj = plotCdacTrace( p, randomTrace, randomSample );
+traceObj = plotCdacTrace( p, samples, randomTrace, randomIndex );
 
 %% export plots
 
-drawingSpectrum = 'drawing/cbw-adc-spectrum.png';
+drawingSpectrum = 'drawing/single-ended-cbw-adc-spectrum.png';
 exportgraphics( obj, drawingSpectrum );
-drawingTrace = 'drawing/cbw-cdac-conversion.png';
+drawingTrace = 'drawing/single-ended-cbw-cdac-conversion.png';
 exportgraphics( traceObj, drawingTrace);
 
 

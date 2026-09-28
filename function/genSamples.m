@@ -10,5 +10,6 @@ function samples = genSamples( p )
   samples.data = p.vcm + p.inputAmplitude * sin( 2 * pi * frequency * time );
   samples.toneBin = toneBin;
   samples.frequency = frequency;
-
+  samples.time =time;
+  
 end
