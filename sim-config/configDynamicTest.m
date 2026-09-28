@@ -8,8 +8,8 @@ function p = configDynamicTest
   p.fs = 10e6;
   p.randomInputFrequency = true;
   p.toneBin = 103;
-  p.vcm = 0.6;
-  p.inputAmplitude = 0.6;
+  p.vcm = 0;
+  p.inputAmplitude = 1.2;
   p.k = 1.380649e-23;   
   p.temperature = 300;  
 
@@ -24,7 +24,7 @@ function p = configDynamicTest
 
   %% transition test spcification
 
-  p.confidence = 0.99;
+  p.confidence = 0.9;
   p.dnlPrecision = 0.1;
 
   %% CDAC specification
@@ -45,6 +45,6 @@ function p = configDynamicTest
   %% Comparator specification
 
   p.compVos = 0;
-  p.compNoise = 100e-6;
+  p.compNoise = 0;
   
 end

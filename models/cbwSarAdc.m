@@ -5,15 +5,15 @@ function [conversionResult, cdacTrace] = cbwSarAdc( sample, p, capArray )
   digitalWord = zeros( 1, p.adcResolution );
   cdacTrace = nan( 1, p.adcResolution );
 
-  %% calculate thermal noise
-
-  capTotal = sum( capArray );
-  thermalNoiseStd = sqrt( p.k * p.temperature / capTotal );
-  thermalNoise = normrnd( 0, thermalNoiseStd );
-
-  %% inject thermal noise
-
-  sample = sample + thermalNoise;
+  % %% calculate thermal noise
+  % 
+  % capTotal = sum( capArray );
+  % thermalNoiseStd = sqrt( p.k * p.temperature / capTotal );
+  % thermalNoise = normrnd( 0, thermalNoiseStd );
+  % 
+  % %% inject thermal noise
+  % 
+  % sample = sample + thermalNoise;
 
   %% binary search
 

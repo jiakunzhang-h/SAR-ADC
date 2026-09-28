@@ -7,13 +7,13 @@ function [conversionResult, cdacTrace] = bwaSarAdc( sample, p, capArray )
 
   %% calculate thermal noise
 
-  capTotal = sum( capArray.main ) + sum( capArray.sub );
-  thermalNoiseStd = sqrt( p.k * p.temperature / capTotal );
-  thermalNoise = normrnd( 0, thermalNoiseStd );
+  %%capTotal = sum( capArray.main ) + sum( capArray.sub );
+  %%thermalNoiseStd = sqrt( p.k * p.temperature / capTotal );
+  %%thermalNoise = normrnd( 0, thermalNoiseStd );
 
   %% inject thermal noise
 
-  sample = sample + thermalNoise;
+  %%sample = sample + thermalNoise;
   
   %% binary search
 

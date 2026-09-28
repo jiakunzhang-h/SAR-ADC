@@ -1,6 +1,6 @@
 function vOut = comparator( vP, vN, p )
 
-  %% Comparator，Vp = Vcdac
+  %% Comparator
 
   vNoise = normrnd( 0, p.compNoise ); 
   if vP > vN + p.compVos + vNoise

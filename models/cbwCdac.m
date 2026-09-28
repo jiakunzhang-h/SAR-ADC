@@ -8,5 +8,5 @@ function Vdac = cbwCdac( Vin, p, capArray, digitalWord )
   %% calculate vdac
 
   Vdac = - Vin + p.vRef * H;
-  
+
 end
