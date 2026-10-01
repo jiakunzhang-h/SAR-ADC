@@ -1,66 +1,69 @@
-function traceObj = plotDifferentialCdacTrace( p, samples, randomTrace, randomIndex  )
+function traceObj = plotDifferentialCdacTrace( p, randomTrace )
 
-  %% calculate differential CDAC voltage
+  %% determine comparator input trace
 
-  differentialCdac = randomTrace( :, 1 ) - randomTrace( :, 2 );
+  positiveTrace = randomTrace( :, 1 );
+  negativeTrace = randomTrace( :, 2 );
 
-  %% calculate LSB
+  %% generate conversion phase axis
 
-  voltageLSB = p.vRef / 2 .^ p.adcResolution;
+  numPhase = length( positiveTrace );
 
-  randomTraceLSB = differentialCdac / voltageLSB;
-  sampleLSB = samples.data( randomIndex ) / voltageLSB;
+  phaseAxis = 0 : numPhase;
 
-  %% sampling time
-
-  sampleTime = ( randomIndex - 1 ) / p.fs;
-  samplePeriod = 1 / p.fs;
-
-  %% generate sine wave before sampling instant
-
-  sineTime = linspace( sampleTime - 2 * samplePeriod, sampleTime, 1000 );
-  sineWave = p.vcm + p.inputAmplitude * sin( 2 * pi * samples.frequency * sineTime );
-  sineWaveLSB = sineWave / voltageLSB;
-
-  %% generate conversion time axis
-
-  conversionTime = sampleTime + ( 1 : p.adcResolution ) / p.adcResolution * samplePeriod;
-
-  %% convert time to ns for plotting
-
-  sineTime = sineTime * 1e9;
-  sampleTime = sampleTime * 1e9;
-  conversionTime = conversionTime * 1e9;
+  positivePlot = [positiveTrace; positiveTrace( end )];
+  negativePlot = [negativeTrace; negativeTrace( end )];
 
   %% plot
 
   traceObj = figure;
 
-  %% input sine wave
-
-  plot( sineTime, sineWaveLSB, 'b-', 'LineWidth', 2.5 );
+  stairs( phaseAxis, positivePlot, 'b', 'LineWidth', 2.5 );
 
   hold on;
 
-  %% sampling point
+  stairs( phaseAxis, negativePlot, 'r--', 'LineWidth', 2.5 );
 
-  plot( sampleTime, sampleLSB, 'ro', 'LineWidth', 2.5, 'MarkerSize', 8 );
+  %% common-mode reference
 
-  %% SAR conversion waveform
+  yline( p.vcm, '--', 'V_{CM}', 'LineWidth', 2 );
 
-  stairs( [sampleTime, conversionTime], [randomTraceLSB( 1 ), randomTraceLSB], 'b', 'LineWidth', 2.5 );
+  %% phase boundaries
 
-  %% sampled input reference
+  for iPhase = 1 : numPhase - 1
+    xline( iPhase, ':', 'HandleVisibility', 'off' );
+  end
 
-  plot( [sampleTime, conversionTime( end )], [sampleLSB, sampleLSB], 'r--', 'LineWidth', 2.5 );
+  %% phase labels
+
+  phaseLabel = strings( 1, numPhase );
+  phaseLabel( 1 ) = "Sample";
+
+  for iPhase = 2 : numPhase
+    phaseLabel( iPhase ) = "Phase " + string( iPhase - 1 );
+  end
+
+  xticks( 0.5 : 1 : numPhase - 0.5 );
+  xticklabels( phaseLabel );
+  xtickangle( 0 );
+  
+  %% y-axis range
+
+  allVoltage = [positiveTrace; negativeTrace; p.vcm];
+
+  voltageMin = min( allVoltage );
+  voltageMax = max( allVoltage );
+
+  voltageMargin = 0.1 * ( voltageMax - voltageMin );
+
+  ylim( [ voltageMin - voltageMargin, voltageMax + voltageMargin ] );
 
   %% plot settings
 
-  xlabel( 'Time (ns)' );
-  ylabel( 'Voltage (LSB)' );
-  ylim( [0, 2 .^ p.adcResolution] );
-  title( 'CDAC Sampling and Conversion Waveform' );
-
+  xlabel( 'Conversion Phase' );
+  ylabel( 'Cdac Trace Voltage (V)' );
+  legend( 'V_P', 'V_N', 'V_{CM}', 'Location', 'best' );
+  title( 'Monotonic Differential SAR ADC Conversion' );
   grid on;
 
 end

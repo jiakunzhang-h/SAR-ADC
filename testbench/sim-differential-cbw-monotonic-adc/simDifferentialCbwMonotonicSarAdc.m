@@ -5,6 +5,10 @@ close all
 clc
 format long g
 
+%% set the seed
+
+rng( 127 );
+
 %% load simulation configuration and parameters
 
 p = configDynamicTest();
@@ -48,14 +52,13 @@ obj = plotAdcDynamicSimulationResult( p, adcDynamicPerformanceMetrics );
 
 randomIndex = randi( p.fftLen );
 randomTrace = squeeze( cdacTrace( randomIndex, :, : ) );
-randomSample = samples.positiveInput( randomIndex ) - samples.negativeInput( randomIndex );
-traceObj = plotDifferentialCdacTrace( p, randomTrace, randomSample );
+traceObj = plotDifferentialCdacTrace( p, randomTrace );
 
 %% export plots
 
-drawingSpectrum = 'drawing/differential-cbw-adc-spectrum.png';
+drawingSpectrum = 'drawing/differential-monotonic-cbw-adc-spectrum.png';
 exportgraphics( obj, drawingSpectrum );
-drawingTrace = 'drawing/differential-cbw-cdac-conversion.png';
+drawingTrace = 'drawing/differential-monotonic-cbw-cdac-conversion.png';
 exportgraphics( traceObj, drawingTrace);
 
 

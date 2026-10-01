@@ -26,14 +26,21 @@ function [conversionResult, cdacTrace] = differentialCbwMonotonicSarAdc( sampleP
 
   %% successive approximation
 
-  for iCycle = 1 : p.adcResolution 
+  for iCycle = 1 : p.adcResolution
+
+    %% save CDAC voltage
+
+    if nargout > 1
+      cdacTrace( iCycle, 1 ) = positiveVin;
+      cdacTrace( iCycle, 2 ) = negativeVin;
+    end
 
     %% comparison and save results
 
     compOutput = comparator( positiveVin, negativeVin, p );
     digitalWord( iCycle ) = compOutput;
 
-    if iCycle == p.adcResolution 
+    if iCycle == p.adcResolution
       break;
     end
 
@@ -43,15 +50,8 @@ function [conversionResult, cdacTrace] = differentialCbwMonotonicSarAdc( sampleP
 
     %% CDAC
 
-    [positiveVin, positiveCdacVoltage] = differentialCbwMonotonicCdac( samplePositive, p, positiveCapArray, positiveControl );
-    [negativeVin, negativeCdacVoltage] = differentialCbwMonotonicCdac( sampleNegative, p, negativeCapArray, negativeControl );
-
-    %% save CDAC voltage
-    
-    if nargout > 1
-      cdacTrace( iCycle, 1 ) = positiveCdacVoltage;
-      cdacTrace( iCycle, 2 ) = negativeCdacVoltage;
-    end
+    positiveVin = differentialCbwMonotonicCdac( samplePositive, p, positiveCapArray, positiveControl );
+    negativeVin = differentialCbwMonotonicCdac( sampleNegative, p, negativeCapArray, negativeControl );
 
   end
 

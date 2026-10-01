@@ -1,4 +1,4 @@
-function [Vdac, cdacVoltage] = differentialCbwMonotonicCdac( Vin, p, capArray, controlSignal )
+function Vdac = differentialCbwMonotonicCdac( Vin, p, capArray, controlSignal )
 
   %% modeling preparation
 
