@@ -1,12 +1,12 @@
-function Vdac = cbwCdac( Vin, p, capArray, digitalWord )
+function Vdac = cbwCdac( Vin, p, capArray, controlSignal )
 
   %% modeling preparation
 
   capTotal = sum( capArray );
-  H = capArray( 1 : end - 1 ) * digitalWord .' / ( capTotal + p.capPar );
+  H = capArray( 1 : end - 1 ) * controlSignal .' / ( capTotal + p.capPar );
 
   %% calculate vdac
 
-  Vdac = - Vin + p.vRef * H;
+  Vdac = p.dacVcm - Vin + p.vRef * H;
 
 end

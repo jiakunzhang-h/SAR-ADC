@@ -1,4 +1,4 @@
-function [positiveControl, negativeControl] = differentialSarLogic( positiveControl, negativeControl, bitIndex, compOutput )
+function [positiveControl, negativeControl] = differentialMonotonicSarLogic( positiveControl, negativeControl, bitIndex, compOutput )
 
   %% generate a digital bit from the output of Comparator
 

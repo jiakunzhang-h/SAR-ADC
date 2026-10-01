@@ -34,6 +34,7 @@ function p = configDynamicTest
   p.unitCap = p.smallestCap * p.numOfSmallestCap;
   p.mismatchStd = 0.01;
   p.capPar = 0;
+  p.dacVcm = 0;
   p.mainArraySize = 5;
   p.subArraySize = 7;
   p.capParMain = 0;

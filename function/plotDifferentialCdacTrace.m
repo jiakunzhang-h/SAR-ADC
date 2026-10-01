@@ -46,7 +46,7 @@ function traceObj = plotDifferentialCdacTrace( p, randomTrace )
   xticks( 0.5 : 1 : numPhase - 0.5 );
   xticklabels( phaseLabel );
   xtickangle( 0 );
-  
+
   %% y-axis range
 
   allVoltage = [positiveTrace; negativeTrace; p.vcm];
@@ -62,7 +62,7 @@ function traceObj = plotDifferentialCdacTrace( p, randomTrace )
 
   xlabel( 'Conversion Phase' );
   ylabel( 'Cdac Trace Voltage (V)' );
-  legend( 'V_P', 'V_N', 'V_{CM}', 'Location', 'best' );
+  legend( 'V_P', 'V_N', 'V_{CM}', 'Location', 'northeast' );
   title( 'Monotonic Differential SAR ADC Conversion' );
   grid on;
 

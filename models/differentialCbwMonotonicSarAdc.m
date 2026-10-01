@@ -46,7 +46,7 @@ function [conversionResult, cdacTrace] = differentialCbwMonotonicSarAdc( sampleP
 
     %% logic
 
-    [positiveControl, negativeControl] = differentialSarLogic( positiveControl, negativeControl, iCycle, compOutput );
+    [positiveControl, negativeControl] = differentialMonotonicSarLogic( positiveControl, negativeControl, iCycle, compOutput );
 
     %% CDAC
 
