@@ -49,8 +49,8 @@ adcCodeDensityStaticPerformanceMetrics = processDifferentialAdcTransitionData( p
 
 %% export plots
 
-drawingDnl = 'drawing/differential-conventional-cbw-adc-dnl.png';
+drawingDnl = 'drawing/differential-cbw-conventional-adc-dnl.png';
 exportgraphics( dnlObj, drawingDnl );
-drawingInl = 'drawing/differential-conventional-cbw-adc-inl.png';
+drawingInl = 'drawing/differential-cbw-conventional-adc-inl.png';
 exportgraphics( inlObj, drawingInl );
 

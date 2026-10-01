@@ -21,13 +21,18 @@ function adcStaticPerformanceMetrics = processAdcTransitionData( p, sineWave, co
 
   codeWidth = diff( transitionVoltage ) ;
   dnlResult = codeWidth / voltageLSB - 1;
-  inlResult = cumsum( dnlResult );
+  rawInlResult = cumsum( dnlResult );
+
+  %% the best-fit straight line
+
+  fitCoefficient = polyfit( 1 : 2 .^ p.adcResolution - 2, rawInlResult, 1 );
+  inlResult = rawInlResult - fitCoefficient( 1 ) * (1 : 2 .^ p.adcResolution - 2) - fitCoefficient( 2 );
 
   %% save the result
 
   adcStaticPerformanceMetrics.dnlResult = dnlResult;
   adcStaticPerformanceMetrics.inlResult = inlResult;
-  adcStaticPerformanceMetrics.dnlCodeIndex = 1 : 2 .^ p.adcResolution - 2;
-  adcStaticPerformanceMetrics.inlCodeIndex = 1 : 2 .^ p.adcResolution - 2;
+  adcStaticPerformanceMetrics.dnlCodeIndex = 1 : length( dnlResult );
+  adcStaticPerformanceMetrics.inlCodeIndex = 1 : length( inlResult );
 
 end

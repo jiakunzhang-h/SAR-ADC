@@ -7,7 +7,7 @@ format long g
 
 %% set the seed
 
-rng( 16 );
+rng( 600 );
 
 %% load simulation configuration and parameters
 
@@ -27,7 +27,7 @@ sineWave = genDifferentialSineSamples( p );
 %% allocate storage for simulation data
 
 numTotalCodeDensitySamples = sineWave.numOfSamples;
-conversionCodeDensityResult = nan( numTotalCodeDensitySamples, p.adcResolution + 1 );
+conversionCodeDensityResult = nan( numTotalCodeDensitySamples, p.adcResolution );
 codeDensityIdealDacOutput = nan( numTotalCodeDensitySamples, 1 );
 
 %% run simulation
@@ -35,7 +35,7 @@ codeDensityIdealDacOutput = nan( numTotalCodeDensitySamples, 1 );
 for iSample = 1 : numTotalCodeDensitySamples
   samplePositive = sineWave.positiveInput( iSample );
   sampleNegative = sineWave.negativeInput( iSample );
-  conversionCodeDensityResult( iSample, : ) = differentialBwaSarAdc( samplePositive, sampleNegative, p, positiveCapArray, negativeCapArray );
+  conversionCodeDensityResult( iSample, : ) = differentialBwaConventionalSarAdc( samplePositive, sampleNegative, p, positiveCapArray, negativeCapArray );
   codeDensityIdealDacOutput( iSample ) = idealDAC( conversionCodeDensityResult( iSample, : ) );
 end
 
@@ -49,8 +49,8 @@ adcCodeDensityStaticPerformanceMetrics = processDifferentialAdcTransitionData( p
 
 %% export plots
 
-drawingDnl = 'drawing/differential-bwa-adc-dnl.png';
+drawingDnl = 'drawing/differential-bwa-conventional-adc-dnl.png';
 exportgraphics( dnlObj, drawingDnl );
-drawingInl = 'drawing/differential-bwa-adc-inl.png';
+drawingInl = 'drawing/differential-bwa-conventional-adc-inl.png';
 exportgraphics( inlObj, drawingInl );
 

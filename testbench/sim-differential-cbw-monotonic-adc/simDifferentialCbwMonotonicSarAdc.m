@@ -56,9 +56,9 @@ traceObj = plotDifferentialCdacTrace( p, randomTrace );
 
 %% export plots
 
-drawingSpectrum = 'drawing/differential-monotonic-cbw-adc-spectrum.png';
+drawingSpectrum = 'drawing/differential-cbw-monotonic-adc-spectrum.png';
 exportgraphics( obj, drawingSpectrum );
-drawingTrace = 'drawing/differential-monotonic-cbw-cdac-conversion.png';
+drawingTrace = 'drawing/differential-cbw-monotonic-cdac-conversion.png';
 exportgraphics( traceObj, drawingTrace);
 
 

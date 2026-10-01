@@ -5,10 +5,6 @@ close all
 clc
 format long g
 
-%% set the seed
-
-rng( 105 );
-
 %% load simulation configuration and parameters
 
 p = configDynamicTest();
@@ -25,15 +21,15 @@ samples = genDifferentialSamples( p );
 
 %% generate CDAC array
 
-positiveCapArray = genCbwCdac( p );
-negativeCapArray = genCbwCdac( p );
+positiveCapArray = genBwaCdac( p );
+negativeCapArray = genBwaCdac( p );
 
 %% run simulation
 
 for iSample = 1 : p.fftLen
   samplePositive = samples.positiveInput( iSample );
   sampleNegative = samples.negativeInput( iSample );
-  [conversionResult( iSample, : ), sampleCdacTrace] = differentialCbwConventionalSarAdc( samplePositive, sampleNegative, p, positiveCapArray, negativeCapArray );
+  [conversionResult( iSample, : ), sampleCdacTrace] = differentialBwaMonotonicSarAdc( samplePositive, sampleNegative, p, positiveCapArray, negativeCapArray );
   cdacTrace( iSample, :, : ) = sampleCdacTrace;
   idealDacOutput( iSample ) = idealDAC( conversionResult( iSample, : ) );
 end
@@ -56,9 +52,9 @@ traceObj = plotDifferentialCdacTrace( p, randomTrace );
 
 %% export plots
 
-drawingSpectrum = 'drawing/differential-cbw-conventional-adc-spectrum.png';
+drawingSpectrum = 'drawing/differential-bwa-monotonic-adc-spectrum.png';
 exportgraphics( obj, drawingSpectrum );
-drawingTrace = 'drawing/differential-cbw-conventional-cdac-conversion.png';
+drawingTrace = 'drawing/differential-bwa-monotonic-cdac-conversion.png';
 exportgraphics( traceObj, drawingTrace);
 
 

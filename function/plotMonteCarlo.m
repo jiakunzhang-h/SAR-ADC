@@ -10,6 +10,7 @@ function mcObj = plotMonteCarlo( p, enobMCResult )
   h( 2 ).LineWidth = 2.5;
   xlabel( 'ENOB' );
   ylabel( 'Count' );
+  xlim( [min( enobMCResult ) - 0.05, p.adcResolution] );
   title( "Monte Carlo ENOB Distribution" );
 
   %% display Monte Carlo statistics

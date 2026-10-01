@@ -31,15 +31,15 @@ parfor iMonteCarlo = 1 : p.numMonteCarlo
 
   %% generate CDAC array
 
-  positiveCapArray = genMonotonicCbwCdac( p );
-  negativeCapArray = genMonotonicCbwCdac( p );
+  positiveCapArray = genBwaCdac( p );
+  negativeCapArray = genBwaCdac( p );
 
   %% run simulation
 
   for iSample = 1 : p.fftLen
     samplePositive = samples.positiveInput( iSample );
     sampleNegative = samples.negativeInput( iSample );
-    conversionResult( iSample, : ) = differentialCbwMonotonicSarAdc( samplePositive, sampleNegative, p, positiveCapArray, negativeCapArray );
+    conversionResult( iSample, : ) = differentialBwaMonotonicSarAdc( samplePositive, sampleNegative, p, positiveCapArray, negativeCapArray );
     singleIdealDacOutput( iSample ) = idealDAC( conversionResult( iSample, : ) );
   end
 
@@ -57,6 +57,6 @@ mcObj = plotMonteCarlo( p, adcDynamicPerformanceMetrics.enobResult );
 
 %% export plots
 
-drawing = 'drawing/differential-cbw-monotonic-monte-carlo-enob-distribution.png';
+drawing = 'drawing/differential-bwa-monotonic-monte-carlo-enob-distribution.png';
 exportgraphics( mcObj, drawing );
 

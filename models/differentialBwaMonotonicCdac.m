@@ -1,4 +1,4 @@
-function [Vdac, cdacVoltage] = bwaTopSampleCdac( Vin, p, capArray, controlSignal )
+function Vdac = differentialBwaMonotonicCdac( Vin, p, capArray, controlSignal )
 
   %% load parameter
 
