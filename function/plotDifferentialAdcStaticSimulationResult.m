@@ -12,7 +12,7 @@ function [dnlObj, inlObj] = plotDifferentialAdcStaticSimulationResult( p, adcCod
   title( 'Differential ADC DNL' );
   allDnlResult = [adcCodeDensityStaticPerformanceMetrics.dnlResult( : )];
   statisticsText =  sprintf( 'mismatch = %.2f %% \n comparator input refered noise = %.0f uV \n DNLmax = %.2f LSB', p.mismatchStd * 100, p.compNoise * 1e6, max( abs( allDnlResult ) ) );
-  text( 0.02, 0.98, statisticsText, 'Units', 'normalized', 'HorizontalAlignment', 'left', 'VerticalAlignment', 'top', 'FontWeight', 'bold' );
+  text( 0.02, 0.99, statisticsText, 'Units', 'normalized', 'HorizontalAlignment', 'left', 'VerticalAlignment', 'top', 'FontWeight', 'bold' );
   xlim( [0, 2 .^   ( p.adcResolution ) ] );
   ylim( [1.2 * min( allDnlResult ), 1.2 * max( allDnlResult )] );
   grid on;
@@ -29,7 +29,7 @@ function [dnlObj, inlObj] = plotDifferentialAdcStaticSimulationResult( p, adcCod
   title( 'Differential ADC INL' );
   allInlResult = [adcCodeDensityStaticPerformanceMetrics.inlResult( : )];
   statisticsText =  sprintf( 'mismatch = %.2f %% \n comparator input refered noise = %.0f uV \n INLmax = %.2f LSB', p.mismatchStd * 100, p.compNoise * 1e6, max( abs( allInlResult ) ) );
-  text( 0.02, 0.98, statisticsText, 'Units', 'normalized', 'HorizontalAlignment', 'left', 'VerticalAlignment', 'top', 'FontWeight', 'bold' );xlim( [0, 2 .^   ( p.adcResolution ) ] );
+  text( 0.02, 0.99, statisticsText, 'Units', 'normalized', 'HorizontalAlignment', 'left', 'VerticalAlignment', 'top', 'FontWeight', 'bold' );xlim( [0, 2 .^   ( p.adcResolution ) ] );
   ylim( [1.2 * min( allInlResult ), 1.2 * max( allInlResult )] );
   grid on;
 

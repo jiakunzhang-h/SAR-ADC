@@ -13,16 +13,30 @@ function adcStaticPerformanceMetrics = processDifferentialAdcTransitionData( p, 
 
   transitionVoltage = - p.inputAmplitude * cos( pi * cumCount( 1 : end - 1 ) / sineWave.numOfSamples );
 
-  %% calculate endpoint LSB
+  % %% first end-points fit method : calculate endpoint LSB
+  % 
+  % numTransition = length( transitionVoltage );
+  % voltageLSB = ( transitionVoltage( end ) - transitionVoltage( 1 ) ) / ( numTransition - 1 );
+  
+  %% calculate ideal LSB
 
-  numTransition = length( transitionVoltage );
-  voltageLSB = ( transitionVoltage( end ) - transitionVoltage( 1 ) ) / ( numTransition - 1 );
+  voltageLSB = 2 * p.vRef / 2 .^ p.adcResolution;
 
   %% calculate DNL and INL
 
   codeWidth = diff( transitionVoltage ) ;
   dnlResult = codeWidth / voltageLSB - 1;
-  inlResult = cumsum( dnlResult );
+  rawInlResult = cumsum( dnlResult );
+  
+  % %% second end-points fit method 
+
+  % fitCoefficient = polyfit( [1, 2 .^ p.adcResolution - 2], [rawInlResult( 1 ), rawInlResult( 2 .^ p.adcResolution - 2 )], 1 );
+  % inlResult = rawInlResult - fitCoefficient( 1 ) * (1 : 2 .^ p.adcResolution - 2) - fitCoefficient( 2 );
+
+  %% the best-fit straight line
+
+  fitCoefficient = polyfit( 1 : 2 .^ p.adcResolution - 2, rawInlResult, 1 );
+  inlResult = rawInlResult - fitCoefficient( 1 ) * (1 : 2 .^ p.adcResolution - 2) - fitCoefficient( 2 );
 
   %% save the result
 
@@ -33,5 +47,5 @@ function adcStaticPerformanceMetrics = processDifferentialAdcTransitionData( p, 
   
   disp( inlResult( 1 ) );
   disp( inlResult( end ) );
-  
+
 end

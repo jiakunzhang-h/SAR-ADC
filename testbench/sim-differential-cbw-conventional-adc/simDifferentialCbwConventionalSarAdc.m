@@ -7,7 +7,7 @@ format long g
 
 %% set the seed
 
-rng( 127 );
+rng( 105 );
 
 %% load simulation configuration and parameters
 
