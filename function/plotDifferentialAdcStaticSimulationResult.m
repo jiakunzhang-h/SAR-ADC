@@ -12,7 +12,7 @@ function [dnlObj, inlObj] = plotDifferentialAdcStaticSimulationResult( p, adcCod
   title( 'Differential ADC DNL' );
   allDnlResult = [adcCodeDensityStaticPerformanceMetrics.dnlResult( : )];
   subtitle( sprintf( 'mismatch = %.2f %% \n comparator input refered noise = %.0f uV \n DNLmax = %.2f LSB', p.mismatchStd * 100, p.compNoise * 1e6, max( abs( allDnlResult ) ) ) )
-  xlim( [0, 2 .^   ( p.adcResolution + 1 ) ] );
+  xlim( [0, 2 .^   ( p.adcResolution ) ] );
   ylim( [1.2 * min( allDnlResult ), 1.2 * max( allDnlResult )] );
   grid on;
 
@@ -28,7 +28,7 @@ function [dnlObj, inlObj] = plotDifferentialAdcStaticSimulationResult( p, adcCod
   title( 'Differential ADC INL' );
   allInlResult = [adcCodeDensityStaticPerformanceMetrics.inlResult( : )];
   subtitle( sprintf( 'mismatch = %.2f %% \n comparator input refered noise = %.0f uV \n INLmax = %.2f LSB', p.mismatchStd * 100, p.compNoise * 1e6, max( abs( allInlResult ) ) ) )
-  xlim( [0, 2 .^   ( p.adcResolution + 1 ) ] );
+  xlim( [0, 2 .^   ( p.adcResolution ) ] );
   ylim( [1.2 * min( allInlResult ), 1.2 * max( allInlResult )] );
   grid on;
 

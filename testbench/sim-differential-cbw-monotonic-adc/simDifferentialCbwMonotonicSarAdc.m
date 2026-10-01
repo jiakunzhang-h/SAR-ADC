@@ -11,7 +11,7 @@ p = configDynamicTest();
 
 %% allocate storage for simulation data
 
-conversionResult = nan( p.fftLen, p.adcResolution + 1 );
+conversionResult = nan( p.fftLen, p.adcResolution );
 idealDacOutput = nan( p.fftLen, 1 );
 cdacTrace = nan( p.fftLen, p.adcResolution, 2 );
 
@@ -21,15 +21,15 @@ samples = genDifferentialSamples( p );
 
 %% generate CDAC array
 
-positiveCapArray = genCbwCdac( p );
-negativeCapArray = genCbwCdac( p );
+positiveCapArray = genMonotonicCbwCdac( p );
+negativeCapArray = genMonotonicCbwCdac( p );
 
 %% run simulation
 
 for iSample = 1 : p.fftLen
   samplePositive = samples.positiveInput( iSample );
   sampleNegative = samples.negativeInput( iSample );
-  [conversionResult( iSample, : ), sampleCdacTrace] = differentialCbwSarAdc( samplePositive, sampleNegative, p, positiveCapArray, negativeCapArray );
+  [conversionResult( iSample, : ), sampleCdacTrace] = differentialCbwMonotonicSarAdc( samplePositive, sampleNegative, p, positiveCapArray, negativeCapArray );
   cdacTrace( iSample, :, : ) = sampleCdacTrace;
   idealDacOutput( iSample ) = idealDAC( conversionResult( iSample, : ) );
 end

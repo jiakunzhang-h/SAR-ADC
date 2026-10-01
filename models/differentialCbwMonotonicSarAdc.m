@@ -1,13 +1,13 @@
-function [conversionResult, cdacTrace] = differentialCbwSarAdc( samplePositive, sampleNegative, p, positiveCapArray, negativeCapArray )
+function [conversionResult, cdacTrace] = differentialCbwMonotonicSarAdc( samplePositive, sampleNegative, p, positiveCapArray, negativeCapArray )
 
   %% SAR logic initialization
 
-  digitalWord = nan( 1, p.adcResolution + 1 );
+  digitalWord = nan( 1, p.adcResolution );
   if nargout > 1
     cdacTrace = nan( p.adcResolution, 2 );
   end
-  positiveControl = zeros( 1, p.adcResolution );
-  negativeControl = zeros( 1, p.adcResolution );
+  positiveControl = zeros( 1, p.adcResolution - 1 );
+  negativeControl = zeros( 1, p.adcResolution - 1 );
 
   % %% calculate thermal noise
   %
@@ -26,14 +26,14 @@ function [conversionResult, cdacTrace] = differentialCbwSarAdc( samplePositive, 
 
   %% successive approximation
 
-  for iCycle = 1 : p.adcResolution + 1
+  for iCycle = 1 : p.adcResolution 
 
     %% comparison and save results
 
     compOutput = comparator( positiveVin, negativeVin, p );
     digitalWord( iCycle ) = compOutput;
 
-    if iCycle == p.adcResolution + 1
+    if iCycle == p.adcResolution 
       break;
     end
 
@@ -43,8 +43,8 @@ function [conversionResult, cdacTrace] = differentialCbwSarAdc( samplePositive, 
 
     %% CDAC
 
-    [positiveVin, positiveCdacVoltage] = cbwTopSampleCdac( samplePositive, p, positiveCapArray, positiveControl );
-    [negativeVin, negativeCdacVoltage] = cbwTopSampleCdac( sampleNegative, p, negativeCapArray, negativeControl );
+    [positiveVin, positiveCdacVoltage] = differentialCbwMonotonicCdac( samplePositive, p, positiveCapArray, positiveControl );
+    [negativeVin, negativeCdacVoltage] = differentialCbwMonotonicCdac( sampleNegative, p, negativeCapArray, negativeControl );
 
     %% save CDAC voltage
     

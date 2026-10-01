@@ -20,7 +20,7 @@ parfor iMonteCarlo = 1 : p.numMonteCarlo
 
   %% load single simulation configuration and parameters
 
-  conversionResult = nan( p.fftLen, p.adcResolution + 1 );
+  conversionResult = nan( p.fftLen, p.adcResolution );
   singleIdealDacOutput = nan( p.fftLen, 1 );
 
   %% generate samples
@@ -31,15 +31,15 @@ parfor iMonteCarlo = 1 : p.numMonteCarlo
 
   %% generate CDAC array
 
-  positiveCapArray = genCbwCdac( p );
-  negativeCapArray = genCbwCdac( p );
+  positiveCapArray = genMonotonicCbwCdac( p );
+  negativeCapArray = genMonotonicCbwCdac( p );
 
   %% run simulation
 
   for iSample = 1 : p.fftLen
     samplePositive = samples.positiveInput( iSample );
     sampleNegative = samples.negativeInput( iSample );
-    conversionResult( iSample, : ) = differentialCbwSarAdc( samplePositive, sampleNegative, p, positiveCapArray, negativeCapArray );
+    conversionResult( iSample, : ) = differentialCbwMonotonicSarAdc( samplePositive, sampleNegative, p, positiveCapArray, negativeCapArray );
     singleIdealDacOutput( iSample ) = idealDAC( conversionResult( iSample, : ) );
   end
 

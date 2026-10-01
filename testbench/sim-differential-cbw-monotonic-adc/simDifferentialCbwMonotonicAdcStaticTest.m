@@ -7,7 +7,7 @@ format long g
 
 %% set the seed
 
-rng( 94 );
+rng( 111 );
 
 %% load simulation configuration and parameters
 
@@ -15,8 +15,8 @@ p = configDynamicTest();
 
 %% generate CDAC array
 
-positiveCapArray = genCbwCdac( p );
-negativeCapArray = genCbwCdac( p );
+positiveCapArray = genMonotonicCbwCdac( p );
+negativeCapArray = genMonotonicCbwCdac( p );
 
 %% code density method
 
@@ -27,7 +27,7 @@ sineWave = genDifferentialSineSamples( p );
 %% allocate storage for simulation data
 
 numTotalCodeDensitySamples = sineWave.numOfSamples;
-conversionCodeDensityResult = nan( numTotalCodeDensitySamples, p.adcResolution + 1 );
+conversionCodeDensityResult = nan( numTotalCodeDensitySamples, p.adcResolution );
 codeDensityIdealDacOutput = nan( numTotalCodeDensitySamples, 1 );
 
 %% run simulation
@@ -35,7 +35,7 @@ codeDensityIdealDacOutput = nan( numTotalCodeDensitySamples, 1 );
 for iSample = 1 : numTotalCodeDensitySamples
   samplePositive = sineWave.positiveInput( iSample );
   sampleNegative = sineWave.negativeInput( iSample );
-  conversionCodeDensityResult( iSample, : ) = differentialCbwSarAdc( samplePositive, sampleNegative, p, positiveCapArray, negativeCapArray );
+  conversionCodeDensityResult( iSample, : ) = differentialCbwMonotonicSarAdc( samplePositive, sampleNegative, p, positiveCapArray, negativeCapArray );
   codeDensityIdealDacOutput( iSample ) = idealDAC( conversionCodeDensityResult( iSample, : ) );
 end
 

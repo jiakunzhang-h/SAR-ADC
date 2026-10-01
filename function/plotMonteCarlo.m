@@ -6,12 +6,16 @@ function mcObj = plotMonteCarlo( p, enobMCResult )
   meanEnob = mean( enobMCResult );
   stdEnob = std( enobMCResult );
   h = histfit( enobMCResult, [], 'kernel' );
-  h( 2 ).Color = 'b';
+  h( 2 ).Color = 'r';
   h( 2 ).LineWidth = 2.5;
-  xlabel( 'ENOB (bit)' );
+  xlabel( 'ENOB' );
   ylabel( 'Count' );
   title( "Monte Carlo ENOB Distribution" );
-  text( min( enobMCResult ) , 50, sprintf( "N = %d Mean = %.2f bit Std = %.2f bit", p.numMonteCarlo, meanEnob, stdEnob ), 'FontWeight', 'bold' );
+
+  %% display Monte Carlo statistics
+
+  statisticsText = sprintf( 'N = %d\nMean = %.2f bits\nStd = %.2f bits', p.numMonteCarlo, meanEnob, stdEnob );
+  text( 0.03, 0.95, statisticsText, 'Units', 'normalized', 'HorizontalAlignment', 'left', 'VerticalAlignment', 'top', 'FontWeight', 'bold' );
   grid on;
 
 end
