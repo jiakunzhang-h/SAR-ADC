@@ -24,7 +24,7 @@ for iTopology = 1 : length( dacTopology )
 
   %% set the seed
 
-  rng( 11 );
+  rng( 10 );
 
   %% generate samples
 
