@@ -65,31 +65,6 @@ end
 
 adcCodeDensityStaticPerformanceMetrics = processAdcTransitionData( p, sineWave, codeDensityIdealDacOutput );
 
-%% fast INL test method
-
-%% generate piecewise ramp samples
-
-fastInlSamples = genPiecewiseRampSample( p );
-
-%% allocate storage for simulation data
-
-numTotalFastInlSamples = numel( fastInlSamples );
-
-conversionFastInlResult = nan( numTotalFastInlSamples, p.adcResolution );
-fastInlIdealDacOutput = nan( numTotalFastInlSamples, 1 );
-
-%% run simulation
-
-for iSample = 1 : numTotalFastInlSamples
-  sample = fastInlSamples( iSample );
-  conversionFastInlResult( iSample, : ) = sbwSarAdc( sample, p, capArray );
-  fastInlIdealDacOutput( iSample ) = idealDAC( conversionFastInlResult( iSample, : ) );
-end
-
-%% process simulation data
-
-adcFastInlStaticPerformanceMetrics = processAdcFastInlData( p, fastInlIdealDacOutput );
-
 %% plot simulation results
 
 [dnlObj, inlObj] = plotAdcStaticSimulationResult( p, adcHistogramStaticPerformanceMetrics, adcCodeDensityStaticPerformanceMetrics );
