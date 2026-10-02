@@ -8,8 +8,8 @@ function p = configDynamicTest
   p.fs = 10e6;
   p.randomInputFrequency = true;
   p.toneBin = 103;
-  p.vcm = 0;
-  p.inputAmplitude = 1.2;
+  p.vcm = 0.6;
+  p.inputAmplitude = 0.6;
   p.k = 1.380649e-23;   
   p.temperature = 300;  
 
@@ -19,13 +19,19 @@ function p = configDynamicTest
 
   %% code density test specification
 
-  p.samplesPerStair = 100;
+  p.samplesPerStair = 256;
   p.rampOffset = p.vRef / 2 .^ p.adcResolution / 1000;
 
   %% transition test spcification
 
   p.confidence = 0.9;
   p.dnlPrecision = 0.1;
+  
+  %% piecewise ramp specification
+
+  p.halfWindow = 4;
+  p.initialStop = 10;
+  p.startExponent = 4;
 
   %% CDAC specification
 
@@ -35,8 +41,8 @@ function p = configDynamicTest
   p.mismatchStd = 0.01;
   p.capPar = 0;
   p.dacVcm = 0;
-  p.mainArraySize = 6;
-  p.subArraySize = 5;
+  p.mainArraySize = 5;
+  p.subArraySize = 7;
   p.capParMain = 0;
   p.capParSub = 0;
   p.dacTopology = 'split-array_type-3';

@@ -5,6 +5,10 @@ close all
 clc
 format long g
 
+%% set the seed
+
+rng( 21 );
+
 %% load simulation configuration and parameters
 
 p = configDynamicTest();

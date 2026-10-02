@@ -4,59 +4,44 @@ function traceObj = plotCdacTrace( p, samples, randomTrace, randomIndex )
 
   voltageLSB = p.vRef / 2 .^ p.adcResolution;
 
-  randomTraceLSB = randomTrace / voltageLSB;
+  %% normalize voltage
+
+  cdacTraceLSB = randomTrace / voltageLSB;
   sampleLSB = samples.data( randomIndex ) / voltageLSB;
 
-  %% sampling time
+  %% generate input sine wave before sampling
 
   sampleTime = ( randomIndex - 1 ) / p.fs;
   samplePeriod = 1 / p.fs;
-
-  %% generate sine wave before sampling instant
-
   sineTime = linspace( sampleTime - 2 * samplePeriod, sampleTime, 1000 );
   sineWave = p.vcm + p.inputAmplitude * sin( 2 * pi * samples.frequency * sineTime );
   sineWaveLSB = sineWave / voltageLSB;
 
-  %% generate conversion time axis
+  %% generate normalized time axis
 
-  conversionTime = sampleTime + ( 1 : p.adcResolution ) / p.adcResolution * samplePeriod;
-
-  %% convert time to ns for plotting
-
-  sineTime = sineTime * 1e9;
-  sampleTime = sampleTime * 1e9;
-  conversionTime = conversionTime * 1e9;
+  sineAxis = linspace( -2, 0, length( sineWaveLSB ) );
+  conversionAxis = 1 : p.adcResolution;
 
   %% plot
 
   traceObj = figure;
 
-  %% input sine wave
-
-  plot( sineTime, sineWaveLSB, 'b-', 'LineWidth', 2.5 );
-
+  plot( sineAxis, sineWaveLSB, 'b', 'LineWidth', 2.5 );
   hold on;
 
-  %% sampling point
+  plot( 0, sampleLSB, 'ro', 'LineWidth', 2.5, 'MarkerSize', 8 );
 
-  plot( sampleTime, sampleLSB, 'ro', 'LineWidth', 2.5, 'MarkerSize', 8 );
+  stairs( [0, conversionAxis], [cdacTraceLSB( 1 ), cdacTraceLSB], 'b', 'LineWidth', 2.5 );
 
-  %% SAR conversion waveform
+  plot( [0, p.adcResolution], [sampleLSB, sampleLSB], 'r--', 'LineWidth', 2.5 );
 
-  stairs( [sampleTime, conversionTime], [randomTraceLSB( 1 ), randomTraceLSB], 'b', 'LineWidth', 2.5 );
+  %% plot specification
 
-  %% sampled input reference
-
-  plot( [sampleTime, conversionTime( end )], [sampleLSB, sampleLSB], 'r--', 'LineWidth', 2.5 );
-
-  %% plot settings
-
-  xlabel( 'Time (ns)' );
+  xlabel( 'SAR Conversion Cycle' );
   ylabel( 'Voltage (LSB)' );
+  title( 'Single-Ended CDAC Conversion Waveform' );
+  xlim( [-2, p.adcResolution] );
   ylim( [0, 2 .^ p.adcResolution] );
-  title( 'CDAC Sampling and Conversion Waveform' );
-
   grid on;
 
 end
