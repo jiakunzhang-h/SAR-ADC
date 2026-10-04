@@ -8,8 +8,8 @@ function p = configDynamicTest
   p.fs = 10e6;
   p.randomInputFrequency = true;
   p.toneBin = 103;
-  p.vcm = 0;
-  p.inputAmplitude = 1.2;
+  p.vcm = 0.6;
+  p.inputAmplitude = 0.6;
   p.k = 1.380649e-23;   
   p.temperature = 300;  
 

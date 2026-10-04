@@ -41,7 +41,7 @@ disp( adcDynamicPerformanceMetrics.sndr );
 
 obj = plotAdcDynamicSimulationResult( p, adcDynamicPerformanceMetrics );
 
-%% plot cdac trace 
+%% plot cdac trace
 
 randomIndex = randi( p.fftLen );
 randomTrace = cdacTrace( randomIndex, : );
