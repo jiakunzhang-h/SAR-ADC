@@ -7,19 +7,19 @@ format long g
 
 %% load simulation configuration and parameters
 
-p = configDynamicTest();
+p = configDifferentialBwaAdcComparisonStaticTest();
 
-%% code density method
+%% fast inl method
 
-%% generate sine samples
+%% generate piecewise ramp samples
 
-sineWave = genDifferentialSineSamples( p );
+[positiveSamples, negativeSamples] = genDifferentialPiecewiseRampSamples( p );
 
 %% allocate storage for simulation data
 
-numTotalCodeDensitySamples = sineWave.numOfSamples;
-conversionCodeDensityResult = nan( numTotalCodeDensitySamples, p.adcResolution, 3 );
-codeDensityIdealDacOutput = nan( numTotalCodeDensitySamples, 3 );
+numTotalFastInlSamples = numel( positiveSamples );
+conversionFastInlResult = nan( numTotalFastInlSamples, p.adcResolution, 3 );
+fastInlIdealDacOutput = nan( numTotalFastInlSamples, 3 );
 
 %% select different architecture
 
@@ -28,7 +28,7 @@ for iTopology = 1 : length( dacTopology )
 
   p.dacTopology = dacTopology{ iTopology };
 
-  rng( 77 );
+  rng( 21 );
  
   %% generate CDAC array
 
@@ -37,11 +37,11 @@ for iTopology = 1 : length( dacTopology )
 
   %% run simulation
 
-  for iSample = 1 : numTotalCodeDensitySamples
-    samplePositive = sineWave.positiveInput( iSample );
-    sampleNegative = sineWave.negativeInput( iSample );
-    conversionCodeDensityResult( iSample, :, iTopology ) = differentialBwaConventionalSarAdc( samplePositive, sampleNegative, p, positiveCapArray, negativeCapArray );
-    codeDensityIdealDacOutput( iSample, iTopology ) = idealDAC( conversionCodeDensityResult( iSample, :, iTopology ) );
+  for iSample = 1 : numTotalFastInlSamples
+    samplePositive = positiveSamples( iSample );
+    sampleNegative = negativeSamples( iSample );
+    conversionFastInlResult( iSample, :, iTopology ) = differentialBwaMonotonicSarAdc( samplePositive, sampleNegative, p, positiveCapArray, negativeCapArray );
+    fastInlIdealDacOutput( iSample, iTopology ) = idealDAC( conversionFastInlResult( iSample, :, iTopology ) );
   end
 
 
@@ -49,11 +49,11 @@ end
 
 %% process simulation data
 
-adcCodeDensityStaticPerformanceMetrics = processComparisonDifferentialAdcTransitionData( p, sineWave, codeDensityIdealDacOutput );
+adcFastInlStaticPerformanceMetrics  = processComparisonDifferentialMonotonicBwaAdcFastInlData( p, fastInlIdealDacOutput );
 
 %% plot simulation results
 
-[dnlObj, inlObj] = plotComparisonDifferentialAdcStaticSimulationResult( p, adcCodeDensityStaticPerformanceMetrics );
+[dnlObj, inlObj] = plotComparisonDifferentialAdcStaticSimulationResult( p, adcFastInlStaticPerformanceMetrics );
 
 %% export plots
 

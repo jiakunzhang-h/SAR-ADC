@@ -1,4 +1,4 @@
-function p = configDifferentialConventionalBwaSarAdcStaticTest
+function p = configDifferentialBwaAdcComparisonStaticTest
 
   %% basic specification
 
@@ -35,10 +35,10 @@ function p = configDifferentialConventionalBwaSarAdcStaticTest
   p.mismatchStd = 0.01;
   p.dacVcm = 0;
   p.mainArraySize = 6;
-  p.subArraySize = 6;
+  p.subArraySize = 5;
   p.capParMain = 0;
   p.capParSub = 0;
-  p.dacTopology = 'split-array_type-3';
+  p.dacTopology = '';
   p.matching = 'good';
   p.bridgeCapWeight = 1;
   

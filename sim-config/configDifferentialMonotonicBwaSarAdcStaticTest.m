@@ -24,7 +24,7 @@ function p = configDifferentialMonotonicBwaSarAdcStaticTest
   p.halfWindow = 4;
   p.initialStop = 10;
   p.startExponent = 4;
-  p.fastSamplesPerStair = 128;
+  p.fastSamplesPerStair = 256;
 
 
   %% CDAC specification

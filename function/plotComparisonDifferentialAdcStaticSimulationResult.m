@@ -31,11 +31,11 @@ function [dnlObj, inlObj] = plotComparisonDifferentialAdcStaticSimulationResult(
   xlabel( 'Code' );
   ylabel( 'DNL (LSB)' );
   title( 'ADC DNL comparison' );
-  legend( legendText, 'Location', 'southeast' );
-  statisticsText = sprintf( 'mismatch = %.2f %% comparator input referred noise = %.0f uV \n Type-1 DNL max = %.2f LSB Type-2 DNL max = %.2f LSB Type-3 DNL max = %.2f LSB', p.mismatchStd * 100, p.compNoise * 1e6, maxDnlResult( 1 ), maxDnlResult( 2 ), maxDnlResult( 3 ) );
+  legend( legendText, 'Location', 'best' );
+  statisticsText = sprintf( 'mismatch = %.2f %% \n comparator input referred noise = %.0f uV \n Type-1 DNL max = %.2f LSB \n Type-2 DNL max = %.2f LSB \n Type-3 DNL max = %.2f LSB', p.mismatchStd * 100, p.compNoise * 1e6, maxDnlResult( 1 ), maxDnlResult( 2 ), maxDnlResult( 3 ) );
   text( 0.001, 0.999, statisticsText, 'Units', 'normalized', 'HorizontalAlignment', 'left', 'VerticalAlignment', 'top', 'FontWeight', 'bold' );
   xlim( [0, 2 .^ p.adcResolution] );
-  ylim( [1.2 * min( dnlResultMatrix, [], 'all' ), 1.2 * max( dnlResultMatrix, [], 'all' )] );
+  ylim( [1.2 * min( dnlResultMatrix, [], 'all' ), 1.6 * max( dnlResultMatrix, [], 'all' )] );
   grid on;
 
   %% plot INL
@@ -69,11 +69,11 @@ function [dnlObj, inlObj] = plotComparisonDifferentialAdcStaticSimulationResult(
   xlabel( 'Code' );
   ylabel( 'INL (LSB)' );
   title( 'ADC INL comparison' );
-  legend( legendText, 'Location', 'southeast' );
-  statisticsText = sprintf( 'mismatch = %.2f %% comparator input referred noise = %.0f uV \n Type-1 INL max = %.2f LSB Type-2 INL max = %.2f LSB Type-3 INL max = %.2f LSB ', p.mismatchStd * 100, p.compNoise * 1e6, maxInlResult( 1 ), maxInlResult( 2 ), maxInlResult( 3 ) );
+  legend( legendText, 'Location', 'best' );
+  statisticsText = sprintf( 'mismatch = %.2f %% \n comparator input referred noise = %.0f uV \n Type-1 INL max = %.2f LSB \n Type-2 INL max = %.2f LSB \n Type-3 INL max = %.2f LSB ', p.mismatchStd * 100, p.compNoise * 1e6, maxInlResult( 1 ), maxInlResult( 2 ), maxInlResult( 3 ) );
   text( 0.001, 0.999, statisticsText, 'Units', 'normalized', 'HorizontalAlignment', 'left', 'VerticalAlignment', 'top', 'FontWeight', 'bold' );
   xlim( [0, 2 .^ p.adcResolution] );
-  ylim( [1.2 * min( inlResultMatrix, [], 'all' ), 1.2 * max( inlResultMatrix, [], 'all' )] );
+  ylim( [1.2 * min( inlResultMatrix, [], 'all' ), 1.6 * max( inlResultMatrix, [], 'all' )] );
   grid on;
 
 
