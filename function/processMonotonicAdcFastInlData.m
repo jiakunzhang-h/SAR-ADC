@@ -1,4 +1,4 @@
-function adcStaticPerformanceMetrics = processAdcFastInlData( p, conversionResult )
+function adcStaticPerformanceMetrics = processMonotonicAdcFastInlData( p, conversionResult )
 
   %% find actual hits of each code
 
@@ -9,10 +9,10 @@ function adcStaticPerformanceMetrics = processAdcFastInlData( p, conversionResul
 
   finalCodeResult = nan( 1, 2 .^ p.adcResolution - 1 );
 
-  for iCodePower = 0 : p.adcResolution - 1 
+  for iCodePower = 1 : p.adcResolution - 1 
 
     finalCodeResult( 2 .^ iCodePower : 2 .^ ( iCodePower + 1 ) : end ) = codeCount( 2 .^ iCodePower );
-
+    finalCodeResult( 2 .^ iCodePower + 1 : 2 .^ ( iCodePower + 1 ) : end ) = codeCount( 2 .^ iCodePower + 1 );
   end
 
   %% calculate DNL and INL

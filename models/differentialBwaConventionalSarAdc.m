@@ -30,8 +30,8 @@ function [conversionResult, cdacTrace] = differentialBwaConventionalSarAdc( samp
 
     %% CDAC
 
-    positiveVin = bwaCdac( samplePositive, p, positiveCapArray, positiveControl );
-    negativeVin = bwaCdac( sampleNegative, p, negativeCapArray, negativeControl );
+    positiveVin = bwaCdac( samplePositive, p, positiveCapArray, positiveControl, 0 );
+    negativeVin = bwaCdac( sampleNegative, p, negativeCapArray, negativeControl, 1 );
     if nargout > 1
       cdacTrace( iCycle, 1 ) = positiveVin;
       cdacTrace( iCycle, 2 ) = negativeVin;
