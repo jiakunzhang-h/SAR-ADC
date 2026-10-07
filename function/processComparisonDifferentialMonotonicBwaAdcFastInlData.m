@@ -1,4 +1,4 @@
-function adcStaticPerformanceMetrics = processComparisonDifferentialBwaAdcFastInlData( p,  conversionResult )
+function adcStaticPerformanceMetrics = processComparisonDifferentialMonotonicBwaAdcFastInlData( p,  conversionResult )
 
   %% allocate storage for simulation data
   codeCount = nan( 2 .^ p.adcResolution, 3 );

@@ -28,7 +28,7 @@ for iTopology = 1 : length( dacTopology )
 
   p.dacTopology = dacTopology{ iTopology };
 
-  rng( 21 );
+  rng( 66 );
  
   %% generate CDAC array
 
