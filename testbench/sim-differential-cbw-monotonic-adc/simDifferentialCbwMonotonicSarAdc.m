@@ -11,7 +11,7 @@ rng( 127 );
 
 %% load simulation configuration and parameters
 
-p = configDynamicTest();
+p = configDifferentialMonotonicDynamicTest();
 
 %% allocate storage for simulation data
 

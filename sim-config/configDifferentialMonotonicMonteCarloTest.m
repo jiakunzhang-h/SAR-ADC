@@ -1,4 +1,4 @@
-function p = configDynamicTest
+function p = configDifferentialConventionalMonteCarloTest
 
   %% basic specification
 
@@ -17,22 +17,6 @@ function p = configDynamicTest
 
   p.numMonteCarlo = 1000;
 
-  %% code density test specification
-
-  p.samplesPerStair = 256;
-  p.rampOffset = p.vRef / 2 .^ p.adcResolution / 1000;
-
-  %% transition test spcification
-
-  p.confidence = 0.9;
-  p.dnlPrecision = 0.1;
-  
-  %% piecewise ramp specification
-
-  p.halfWindow = 4;
-  p.initialStop = 10;
-  p.startExponent = 4;
-
   %% CDAC specification
 
   p.smallestCap = 50e-15;
@@ -42,7 +26,7 @@ function p = configDynamicTest
   p.capPar = 0;
   p.dacVcm = 0;
   p.mainArraySize = 6;
-  p.subArraySize = 6;
+  p.subArraySize = 5;
   p.capParMain = 0;
   p.capParSub = 0;
   p.dacTopology = 'split-array_type-3';

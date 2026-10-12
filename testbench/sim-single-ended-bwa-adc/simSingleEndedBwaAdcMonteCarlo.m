@@ -7,7 +7,7 @@ format long g
 
 %% load simulation configuration and parameters
 
-p = configDynamicTest();
+p = configSingleEndedMonteCarloTest();
 
 %% allocate storage for simulation data
 

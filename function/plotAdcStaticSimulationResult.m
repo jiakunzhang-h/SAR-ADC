@@ -43,10 +43,10 @@ function [dnlObj, inlObj] = plotAdcStaticSimulationResult( p, adcHistogramStatic
   ylabel( 'DNL (LSB)' );
   title( 'ADC DNL comparison' );
   legend( legendText, 'Location', 'best' );
-  statisticsText = sprintf( 'mismatch = %.2f %% comparator input referred noise = %.0f uV \n DNL max = %.2f LSB DNL deviation max = %.2f LSB @ code %d', p.mismatchStd * 100, p.compNoise * 1e6, max( abs( allDnlResult ) ), maxDnlDeviation, maxDnlDeviationCode );
+  statisticsText = sprintf( 'mismatch = %.2f %% \n comparator input referred noise = %.0f uV \n DNL max = %.2f LSB \n DNL deviation max = %.2f LSB @ code %d', p.mismatchStd * 100, p.compNoise * 1e6, max( abs( allDnlResult ) ), maxDnlDeviation, maxDnlDeviationCode );
   text( 0.001, 0.999, statisticsText, 'Units', 'normalized', 'HorizontalAlignment', 'left', 'VerticalAlignment', 'top', 'FontWeight', 'bold' );
   xlim( [0, 2 .^ p.adcResolution] );
-  ylim( [1.2 * min( allDnlResult ), 1.2 * max( allDnlResult )] );
+  ylim( [1.2 * min( allDnlResult ), 1.5 * max( allDnlResult )] );
   grid on;
 
   %% plot INL
@@ -88,10 +88,10 @@ function [dnlObj, inlObj] = plotAdcStaticSimulationResult( p, adcHistogramStatic
   ylabel( 'INL (LSB)' );
   title( 'ADC INL comparison' );
   legend( legendText, 'Location', 'best' );
-  statisticsText = sprintf( 'mismatch = %.2f %% comparator input referred noise = %.0f uV \n INL max = %.2f LSB INL deviation max = %.2f LSB @ code %d', p.mismatchStd * 100, p.compNoise * 1e6, max( abs( allInlResult ) ), maxInlDeviation, maxInlDeviationCode );
+  statisticsText = sprintf( 'mismatch = %.2f %% \n comparator input referred noise = %.0f uV \n INL max = %.2f LSB \n INL deviation max = %.2f LSB @ code %d', p.mismatchStd * 100, p.compNoise * 1e6, max( abs( allInlResult ) ), maxInlDeviation, maxInlDeviationCode );
   text( 0.001, 0.999, statisticsText, 'Units', 'normalized', 'HorizontalAlignment', 'left', 'VerticalAlignment', 'top', 'FontWeight', 'bold' );
   xlim( [0, 2 .^ p.adcResolution] );
-  ylim( [1.2 * min( allInlResult ), 1.2 * max( allInlResult )] );
+  ylim( [1.2 * min( allInlResult ), 1.5 * max( allInlResult )] );
   grid on;
 
 end

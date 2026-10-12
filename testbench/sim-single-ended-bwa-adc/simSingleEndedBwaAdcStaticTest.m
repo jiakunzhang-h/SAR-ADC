@@ -11,7 +11,7 @@ rng( 66 );
 
 %% load simulation configuration and parameters
 
-p = configDynamicTest();
+p = configSingleEndedStaticTest();
 
 %% generate CDAC array
 

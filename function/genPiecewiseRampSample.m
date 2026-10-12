@@ -6,7 +6,7 @@ function samples = genPiecewiseRampSample( p )
 
   %% ramp step
 
-  voltStep = voltageLSB / p.samplesPerStair;
+  voltStep = voltageLSB / p.fastSamplesPerStair;
 
   %% first segment
 
