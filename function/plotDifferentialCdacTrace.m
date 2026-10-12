@@ -1,4 +1,4 @@
-function traceObj = plotDifferentialCdacTrace( p, randomTrace )
+function traceObj = plotDifferentialCdacTrace( p, randomTrace,switchingMode )
 
   %% determine comparator input trace
 
@@ -63,7 +63,17 @@ function traceObj = plotDifferentialCdacTrace( p, randomTrace )
   xlabel( 'Conversion Phase' );
   ylabel( 'Cdac Trace Voltage (V)' );
   legend( 'V_P', 'V_N', 'V_{CM}', 'Location', 'best' );
-  title( 'Monotonic Differential SAR ADC Conversion' );
+
+  %% choose the title
+  
+  switch lower( string( switchingMode ) )
+    case "conventional"
+      title( 'Conventional Differential SAR ADC Conversion' );
+    case "monotonic"
+      title( 'Monotonic Differential SAR ADC Conversion' );
+    otherwise
+      error( 'Invalid switching mode: %s', string( switchingMode ) );
+  end
   grid on;
 
 end

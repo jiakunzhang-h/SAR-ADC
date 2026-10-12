@@ -46,7 +46,7 @@ function [dnlObj, inlObj] = plotAdcStaticSimulationResult( p, adcHistogramStatic
   statisticsText = sprintf( 'mismatch = %.2f %% \n comparator input referred noise = %.0f uV \n DNL max = %.2f LSB \n DNL deviation max = %.2f LSB @ code %d', p.mismatchStd * 100, p.compNoise * 1e6, max( abs( allDnlResult ) ), maxDnlDeviation, maxDnlDeviationCode );
   text( 0.001, 0.999, statisticsText, 'Units', 'normalized', 'HorizontalAlignment', 'left', 'VerticalAlignment', 'top', 'FontWeight', 'bold' );
   xlim( [0, 2 .^ p.adcResolution] );
-  ylim( [1.2 * min( allDnlResult ), 1.5 * max( allDnlResult )] );
+  ylim( [1.2 * min( allDnlResult ), 5 * max( allDnlResult )] );
   grid on;
 
   %% plot INL

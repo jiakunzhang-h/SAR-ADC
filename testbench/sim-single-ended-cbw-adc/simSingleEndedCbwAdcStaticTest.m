@@ -7,7 +7,7 @@ format long g
 
 %% set the seed
 
-rng( 16 );
+rng( 746 );
 
 %% load simulation configuration and parameters
 
@@ -99,5 +99,5 @@ adcFastInlStaticPerformanceMetrics = processAdcFastInlData( p, fastInlIdealDacOu
 drawingDnl = 'drawing/single-ended-cbw-adc-dnl-comparison.png';
 exportgraphics( dnlObj, drawingDnl );
 drawingInl = 'drawing/single-ended-cbw-adc-inl-comparison.png';
-exportgraphics( inlObj, drawingInl );
+
 

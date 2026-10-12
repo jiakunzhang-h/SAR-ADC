@@ -10,6 +10,6 @@ function capArray = genCbwCdac( p )
 
   %% actual capacitor array
   
-  capArray = p.unitCap * normrnd( weightArray, p.mismatchStd .* sqrt( weightArray / p.numOfSmallestCap ) );
+  capArray = p.unitCap * normrnd( weightArray, p.mismatchStd .* sqrt( weightArray ) / p.numOfSmallestCap );
 
 end

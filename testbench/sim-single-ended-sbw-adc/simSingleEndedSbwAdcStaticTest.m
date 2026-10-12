@@ -75,4 +75,3 @@ drawingDnl = 'drawing/single-ended-sbw-adc-dnl-comparison.png';
 exportgraphics( dnlObj, drawingDnl );
 drawingInl = 'drawing/single-ended-sbw-adc-inl-comparison.png';
 exportgraphics( inlObj, drawingInl );
-

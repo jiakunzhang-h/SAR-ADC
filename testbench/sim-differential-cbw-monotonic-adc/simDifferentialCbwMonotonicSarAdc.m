@@ -52,7 +52,7 @@ obj = plotAdcDynamicSimulationResult( p, adcDynamicPerformanceMetrics );
 
 randomIndex = randi( p.fftLen );
 randomTrace = squeeze( cdacTrace( randomIndex, :, : ) );
-traceObj = plotDifferentialCdacTrace( p, randomTrace );
+traceObj = plotDifferentialCdacTrace( p, randomTrace, "Monotonic" );
 
 %% export plots
 

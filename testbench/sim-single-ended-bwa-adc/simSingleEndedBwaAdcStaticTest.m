@@ -7,7 +7,7 @@ format long g
 
 %% set the seed
 
-rng( 66 );
+rng( 753 );
 
 %% load simulation configuration and parameters
 
@@ -100,4 +100,3 @@ drawingDnl = 'drawing/single-ended-bwa-adc-dnl-comparison.png';
 exportgraphics( dnlObj, drawingDnl );
 drawingInl = 'drawing/single-ended-bwa-adc-inl-comparison.png';
 exportgraphics( inlObj, drawingInl );
-

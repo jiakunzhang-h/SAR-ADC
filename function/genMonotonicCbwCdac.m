@@ -10,6 +10,6 @@ function capArray = genMonotonicCbwCdac( p )
 
   %% actual capacitor array
 
-   capArray = p.unitCap * normrnd( weightArray, p.mismatchStd .* sqrt( weightArray / p.numOfSmallestCap ) );
+   capArray = p.unitCap * normrnd( weightArray, p.mismatchStd .* sqrt( weightArray ) / p.numOfSmallestCap );
    
 end

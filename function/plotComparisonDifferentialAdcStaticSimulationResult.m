@@ -11,11 +11,11 @@ function [dnlObj, inlObj] = plotComparisonDifferentialAdcStaticSimulationResult(
 
   %% plot type two dnl
 
-  plot( adcStaticPerformanceMetrics.dnlCodeIndex, adcStaticPerformanceMetrics.dnlResult( : , 2 ), 'r--', 'LineWidth', 2.5 );
+  plot( adcStaticPerformanceMetrics.dnlCodeIndex, adcStaticPerformanceMetrics.dnlResult( : , 2 ), 'r--', 'LineWidth', 2 );
 
   %% plot type three dnl
 
-  plot( adcStaticPerformanceMetrics.dnlCodeIndex, adcStaticPerformanceMetrics.dnlResult( : , 3 ), 'g--', 'LineWidth', 2.5 );
+  plot( adcStaticPerformanceMetrics.dnlCodeIndex, adcStaticPerformanceMetrics.dnlResult( : , 3 ), 'g-.s', 'LineWidth', 2.0, 'MarkerSize', 5, 'MarkerIndices', 1:80:length( adcStaticPerformanceMetrics.dnlCodeIndex ) );
 
   %% construct dnl result matrix
 
@@ -53,7 +53,7 @@ function [dnlObj, inlObj] = plotComparisonDifferentialAdcStaticSimulationResult(
 
   %% plot type three inl
 
-  plot( adcStaticPerformanceMetrics.inlCodeIndex, adcStaticPerformanceMetrics.inlResult( : , 3 ), 'g--', 'LineWidth', 2.5 );
+  plot( adcStaticPerformanceMetrics.inlCodeIndex, adcStaticPerformanceMetrics.inlResult( : , 3 ), 'g-.s', 'LineWidth', 2.0, 'MarkerSize', 5, 'MarkerIndices', 1:80:length( adcStaticPerformanceMetrics.inlCodeIndex ) );
 
   %% construct inl result matrix
 
