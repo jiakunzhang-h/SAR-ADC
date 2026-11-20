@@ -25,6 +25,10 @@ for iResolution = 1 : numel( resolutionArray )
 
   p.adcResolution = resolutionArray( iResolution );
 
+  %% update ramp offset
+
+  p.rampOffset = 2 * p.vRef / 2 ^ p.adcResolution / 1000;
+  
   %% generate samples
 
   histogramSamples = genDifferentialRampSamplesForEnergyComparison( p );

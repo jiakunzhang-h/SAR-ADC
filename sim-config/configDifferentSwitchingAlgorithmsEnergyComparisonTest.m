@@ -2,7 +2,7 @@ function p = configDifferentSwitchingAlgorithmsEnergyComparisonTest
 
   %% basic specification
 
-  p.adcResolution = 12;
+  p.adcResolution = 10;
   p.fftLen = 4096;
   p.vRef = 1.2;
   p.fs = 10e6;

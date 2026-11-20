@@ -20,9 +20,10 @@ function [conversionResult, cdacTrace, switchingEnergy] = differentialCbwConvent
 
   if nargout > 2
     switchingEnergy = 0;
-    controlSignalList = nan( p.adcResolution + 1, p.adcResolution, 2 );
-    controlSignalList( 1, :, 1 ) = ones( 1, p.adcResolution ) * samplePositive;
-    controlSignalList( 1, :, 2 ) = ones( 1, p.adcResolution ) * sampleNegative;
+    numCap = numel( positiveCapArray );
+    controlSignalList = nan( p.adcResolution + 1, numCap, 2 );
+    controlSignalList( 1, :, 1 ) = ones( 1, numCap ) * samplePositive;
+    controlSignalList( 1, :, 2 ) = ones( 1, numCap ) * sampleNegative;
   end
 
   % %% calculate thermal noise
@@ -47,8 +48,8 @@ function [conversionResult, cdacTrace, switchingEnergy] = differentialCbwConvent
     %% store the control signal
 
     if nargout > 2
-      controlSignalList( iCycle + 1, :, 1 ) = positiveControl * p.vRef;
-      controlSignalList( iCycle + 1, :, 2 ) = negativeControl * p.vRef;
+      controlSignalList( iCycle + 1, :, 1 ) = [ positiveControl, 0 ] * p.vRef;
+      controlSignalList( iCycle + 1, :, 2 ) = [ negativeControl, 1 ] * p.vRef;
     end
 
     %% CDAC
@@ -71,8 +72,8 @@ function [conversionResult, cdacTrace, switchingEnergy] = differentialCbwConvent
     %% calculate the switching energy
     if nargout > 2
       deltaTopVoltage = cdacTrace( iCycle + 1, : ) - cdacTrace( iCycle, : );
-      oldBottomVoltage = reshape( controlSignalList( iCycle, :, : ), p.adcResolution, 2 );
-      newBottomVoltage = reshape( controlSignalList( iCycle + 1, :, : ), p.adcResolution, 2 );
+      oldBottomVoltage = reshape( controlSignalList( iCycle, :, : ), numCap, 2 );
+      newBottomVoltage = reshape( controlSignalList( iCycle + 1, :, : ), numCap, 2 );
       switchingEnergy = switchingEnergy + calculateSwitchingEnergy( p, positiveCapArray, negativeCapArray, oldBottomVoltage, newBottomVoltage, deltaTopVoltage );
     end
 
