@@ -1,4 +1,4 @@
-function p = configDifferentialConventionalMonteCarloTest
+function p = configDifferentialMonotonicMonteCarloTest
 
   %% basic specification
 

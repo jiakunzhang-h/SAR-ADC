@@ -3,7 +3,11 @@ function Vdac = differentialCbwMonotonicCdac( Vin, p, capArray, controlSignal )
   %% modeling preparation
 
   capTotal = sum( capArray );
-  H = capArray( 1 : end - 1 ) * controlSignal .' / ( capTotal + p.capPar );
+
+  %% considering the parasitic capacitance
+  deltaControl = controlSignal - 1;
+
+  H = capArray * deltaControl .' / ( capTotal + p.capPar );
 
   %% calculate CDAC voltage
 
@@ -12,5 +16,5 @@ function Vdac = differentialCbwMonotonicCdac( Vin, p, capArray, controlSignal )
   %% calculate top-plate voltage
 
   Vdac = Vin + cdacVoltage;
-  
+
 end

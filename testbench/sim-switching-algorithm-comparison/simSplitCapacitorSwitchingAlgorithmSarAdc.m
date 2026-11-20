@@ -1,0 +1,64 @@
+%% simulation preparation
+
+clear
+close all
+clc
+format long g
+
+%% set the seed
+
+% rng( 105 );
+
+%% load simulation configuration and parameters
+
+p = configSplitCapacitorSwitchingAlgorithm();
+
+%% allocate storage for simulation data
+
+conversionResult = nan( p.fftLen, p.adcResolution );
+idealDacOutput = nan( p.fftLen, 1 );
+cdacTrace = nan( p.fftLen, p.adcResolution + 1, 2 );
+
+%% generate samples
+
+samples = genDifferentialSamples( p );
+
+%% generate CDAC array
+
+positiveCapArray = genSbwCdac( p );
+negativeCapArray = genSbwCdac( p );
+
+%% run simulation
+
+for iSample = 1 : p.fftLen
+  samplePositive = samples.positiveInput( iSample );
+  sampleNegative = samples.negativeInput( iSample );
+  [conversionResult( iSample, : ), sampleCdacTrace] = differentialSbwSarAdc( samplePositive, sampleNegative, p, positiveCapArray, negativeCapArray );
+  cdacTrace( iSample, :, : ) = sampleCdacTrace;
+  idealDacOutput( iSample ) = idealDAC( conversionResult( iSample, : ) );
+end
+
+% %% process simulation data
+
+% adcDynamicPerformanceMetrics = processAdcData( p, samples, idealDacOutput );
+% disp( adcDynamicPerformanceMetrics.enob );
+% disp( adcDynamicPerformanceMetrics.sndr );
+
+% %% plot simulation results
+
+% obj = plotAdcDynamicSimulationResult( p, adcDynamicPerformanceMetrics );
+
+%% plot cdac trace 
+
+randomIndex = randi( p.fftLen );
+randomTrace = squeeze( cdacTrace( randomIndex, :, : ) );
+traceObj = plotDifferentialCdacTrace( p, randomTrace, "split-capacitor" );
+
+%% export plots
+
+% drawingSpectrum = 'drawing/differential-cbw-conventional-adc-spectrum.png';
+% exportgraphics( obj, drawingSpectrum );
+drawingTrace = 'drawing/switching-algorithm-figures/split-capacitor-switching-algorithm-cdac-conversion.png';
+exportgraphics( traceObj, drawingTrace );
+
+

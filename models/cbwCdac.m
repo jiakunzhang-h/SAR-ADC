@@ -12,6 +12,6 @@ function Vdac = cbwCdac( Vin, p, capArray, controlSignal, dummySignal )
 
   %% calculate vdac
 
-  Vdac = p.dacVcm - Vin + p.vRef * H;
+  Vdac = p.vcm - Vin + p.vRef * H;
 
 end

@@ -1,13 +1,27 @@
-function [conversionResult, cdacTrace] = differentialCbwMonotonicSarAdc( samplePositive, sampleNegative, p, positiveCapArray, negativeCapArray )
+function [conversionResult, cdacTrace, switchingEnergy] = differentialCbwMonotonicSarAdc( samplePositive, sampleNegative, p, positiveCapArray, negativeCapArray )
 
   %% SAR logic initialization
 
   digitalWord = nan( 1, p.adcResolution );
+
   if nargout > 1
-    cdacTrace = nan( p.adcResolution, 2 );
+    cdacTrace = nan( p.adcResolution + 1, 2 );
+
+    %% sampling phase
+
+    cdacTrace( 1, : ) = [ samplePositive, sampleNegative ];
+
   end
-  positiveControl = zeros( 1, p.adcResolution - 1 );
-  negativeControl = zeros( 1, p.adcResolution - 1 );
+  positiveControl = ones( 1, p.adcResolution );
+  negativeControl = ones( 1, p.adcResolution );
+
+  if nargout > 2
+    switchingEnergy = 0;
+    controlSignalList = nan( p.adcResolution + 1, p.adcResolution, 2 );
+
+    controlSignalList( 1, :, 1 ) = positiveControl * p.vRef;
+    controlSignalList( 1, :, 2 ) = negativeControl * p.vRef;
+  end
 
   % %% calculate thermal noise
   %
@@ -31,14 +45,29 @@ function [conversionResult, cdacTrace] = differentialCbwMonotonicSarAdc( sampleP
     %% save CDAC voltage
 
     if nargout > 1
-      cdacTrace( iCycle, 1 ) = positiveVin;
-      cdacTrace( iCycle, 2 ) = negativeVin;
+      cdacTrace( iCycle + 1, 1 ) = positiveVin;
+      cdacTrace( iCycle + 1, 2 ) = negativeVin;
     end
+    if nargout > 2
+      controlSignalList( iCycle + 1, :, 1 ) = positiveControl * p.vRef;
+
+      controlSignalList( iCycle + 1, :, 2 ) = negativeControl * p.vRef;
+    end
+
 
     %% comparison and save results
 
     compOutput = comparator( positiveVin, negativeVin, p );
     digitalWord( iCycle ) = compOutput;
+
+    %% calculate the switching energy
+
+    if nargout > 2
+      deltaTopVoltage = cdacTrace( iCycle + 1, : ) - cdacTrace( iCycle, : );
+      oldBottomVoltage = reshape( controlSignalList( iCycle, :, : ), p.adcResolution, 2 );
+      newBottomVoltage = reshape( controlSignalList( iCycle + 1, :, : ), p.adcResolution, 2 );
+      switchingEnergy = switchingEnergy + calculateSwitchingEnergy( p, positiveCapArray, negativeCapArray, oldBottomVoltage, newBottomVoltage, deltaTopVoltage );
+    end
 
     if iCycle == p.adcResolution
       break;

@@ -2,10 +2,10 @@ function [positiveControl, negativeControl] = differentialMonotonicSarLogic( pos
 
   %% generate a digital bit from the output of Comparator
 
-  if compOutput == 1
-    negativeControl( bitIndex ) = 1;
+  if compOutput == 0
+    negativeControl( bitIndex ) = 0;
   else
-    positiveControl( bitIndex ) = 1;
+    positiveControl( bitIndex ) = 0;
   end
 
 end

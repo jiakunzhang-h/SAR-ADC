@@ -3,12 +3,12 @@ function p = configDifferentialConventionalDynamicTest
   %% basic specification
 
   p.adcResolution = 12;
-  p.fftLen = 16384;
+  p.fftLen = 4096;
   p.vRef = 1.2;
   p.fs = 10e6;
   p.randomInputFrequency = true;
   p.toneBin = 103;
-  p.vcm = 0;
+  p.vcm = 0.6;
   p.inputAmplitude = 1.2;
   p.k = 1.380649e-23;   
   p.temperature = 300;  

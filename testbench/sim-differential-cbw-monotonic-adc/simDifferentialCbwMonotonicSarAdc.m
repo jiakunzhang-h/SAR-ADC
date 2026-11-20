@@ -17,7 +17,7 @@ p = configDifferentialMonotonicDynamicTest();
 
 conversionResult = nan( p.fftLen, p.adcResolution );
 idealDacOutput = nan( p.fftLen, 1 );
-cdacTrace = nan( p.fftLen, p.adcResolution, 2 );
+cdacTrace = nan( p.fftLen, p.adcResolution + 1, 2 );
 
 %% generate samples
 

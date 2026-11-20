@@ -99,5 +99,5 @@ adcFastInlStaticPerformanceMetrics = processAdcFastInlData( p, fastInlIdealDacOu
 drawingDnl = 'drawing/single-ended-cbw-adc-dnl-comparison.png';
 exportgraphics( dnlObj, drawingDnl );
 drawingInl = 'drawing/single-ended-cbw-adc-inl-comparison.png';
-
+exportgraphics( inlObj, drawingInl );
 
