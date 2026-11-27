@@ -25,15 +25,14 @@ samples = genDifferentialSamples( p );
 
 %% generate CDAC array
 
-positiveCapArray = genEnergySavingCdac( p );
-negativeCapArray = genEnergySavingCdac( p );
+capArray = genEnergySavingCdac( p );
 
 %% run simulation
 
 for iSample = 1 : p.fftLen
   samplePositive = samples.positiveInput( iSample );
   sampleNegative = samples.negativeInput( iSample );
-  [conversionResult( iSample, : ), sampleCdacTrace] = differentialEnergySavingSarAdc( samplePositive, sampleNegative, p, positiveCapArray, negativeCapArray );
+  [conversionResult( iSample, : ), sampleCdacTrace] = differentialEnergySavingSarAdc( samplePositive, sampleNegative, p, capArray );
   cdacTrace( iSample, :, : ) = sampleCdacTrace;
   idealDacOutput( iSample ) = idealDAC( conversionResult( iSample, : ) );
 end

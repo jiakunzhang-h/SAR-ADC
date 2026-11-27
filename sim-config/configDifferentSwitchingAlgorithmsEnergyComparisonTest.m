@@ -3,6 +3,7 @@ function p = configDifferentSwitchingAlgorithmsEnergyComparisonTest
   %% basic specification
 
   p.adcResolution = 10;
+  p.adcResolutionArray = 3 : 16;
   p.fftLen = 4096;
   p.vRef = 1.2;
   p.fs = 10e6;
@@ -24,7 +25,6 @@ function p = configDifferentSwitchingAlgorithmsEnergyComparisonTest
   p.unitCap = p.smallestCap * p.numOfSmallestCap;
   p.mismatchStd = 0;
   p.capPar = 0;
-  p.dacVcm = 0;
   p.mainArraySize = 6;
   p.subArraySize = 5;
   p.capParMain = 0;
@@ -38,4 +38,18 @@ function p = configDifferentSwitchingAlgorithmsEnergyComparisonTest
   p.compVos = 0;
   p.compNoise = 0;
   
+  %% simulation specification
+
+  p.capGenerationFunctionList = { ...
+  @genDifferentialCbwCdac, @genDifferentialSbwCdac, ...
+  @genEnergySavingCdac, @genDifferentialMonotonicCbwCdac, ...
+  @genMergedCapacitorCbwCdac, @genInvertedMergedCapacitorCbwCdac ...
+  };
+
+  p.conversionFunctionList = { ...
+  @differentialCbwConventionalSarAdc, @differentialSbwSarAdc, ...
+  @differentialEnergySavingSarAdc, @differentialCbwMonotonicSarAdc, ...
+  @differentialMergedCapacitorSarAdc, @differentialInvertedMergedCapacitorSarAdc ...
+  };
+
 end

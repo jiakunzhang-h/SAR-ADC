@@ -20,7 +20,7 @@ function energyObj = plotDifferentialAdcSwitchingEnergyVersusResolutionSimulatio
   title( ['Different Switching Schemes Energy versus Resolution Comparison '] );
   legend( legendText, 'Location', 'northwest' );
   xticks( 1 : 15 );
-  xlim( [0, 15] );
+  xlim( [resolutionArray( 1 ), resolutionArray( end )] );
   totalSwitchingEnergyResult = averageSwitchingEnergy( : );
   ylim( [0, 1.5 * max( totalSwitchingEnergyResult )] );
   grid on;

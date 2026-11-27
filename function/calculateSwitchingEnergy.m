@@ -1,31 +1,27 @@
-function switchingEnergy = calculateSwitchingEnergy( p, positiveCapArray, negativeCapArray, controlSignalList, controlSignalListNext, deltaTopVoltage )
+function switchingEnergy = calculateSwitchingEnergy( p, capArray, controlVoltage, deltaTopVoltage )
 
   %% modeling preparation
 
-  positiveCapArray = positiveCapArray( : );
-  negativeCapArray = negativeCapArray( : );
+  positiveCapArray = capArray.positiveCapArray( : );
+  negativeCapArray = capArray.negativeCapArray( : );
 
-  oldPositiveControl = controlSignalList( : , 1 );
-  oldNegativeControl = controlSignalList( : , 2 );
-  newPositiveControl = controlSignalListNext( : , 1 );
-  newNegativeControl = controlSignalListNext( : , 2 );
+  lastPositiveControl = controlVoltage.lastBottomVoltage( : , 1 );
+  lastNegativeControl = controlVoltage.lastBottomVoltage( : , 2 );
+  positiveControl = controlVoltage.bottomVoltage( : , 1 );
+  negativeControl = controlVoltage.bottomVoltage( : , 2 );
 
-  %% select capacitors connected to Vref after switching
+  %% calculate charge supplied by reference voltage
 
-  vrefPositiveIndex = newPositiveControl == p.vRef;
-  vrefNegativeIndex = newNegativeControl == p.vRef;
+  deltaPositiveCharge = positiveCapArray .* ( ( positiveControl - lastPositiveControl ) - deltaTopVoltage( 1 ) );
+  deltaNegativeCharge = negativeCapArray .* ( ( negativeControl - lastNegativeControl  ) - deltaTopVoltage( 2 ) );
 
   %% calculate the switching energy
 
-  %% calculate charge supplied by Vref
-
-  deltaQref = sum( positiveCapArray( vrefPositiveIndex ) .* ...
-    ( ( newPositiveControl( vrefPositiveIndex ) - oldPositiveControl( vrefPositiveIndex ) ) - deltaTopVoltage( 1 ) ) ) + ...
-    sum( negativeCapArray( vrefNegativeIndex ) .* ...
-    ( ( newNegativeControl( vrefNegativeIndex ) - oldNegativeControl( vrefNegativeIndex ) ) - deltaTopVoltage( 2 ) ) );
+  positiveEnergy = sum( deltaPositiveCharge .* positiveControl );
+  negativeEnergy = sum( deltaNegativeCharge .* negativeControl );
 
   %% calculate and normalize reference energy
 
-  switchingEnergy = p.vRef * deltaQref / ( p.unitCap * p.vRef ^ 2 );
+  switchingEnergy = ( positiveEnergy + negativeEnergy ) / (p.unitCap * p.vRef ^ 2);
 
 end

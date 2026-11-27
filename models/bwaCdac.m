@@ -31,6 +31,6 @@ function Vdac = bwaCdac( Vin, p, capArray, digitalWord, dummySignal )
   %% calculate vdac
 
   H = hMain + AR * hSub;
-  Vdac = p.dacVcm - Vin + p.vRef * H;
+  Vdac = p.vcm - Vin + p.vRef * H;
 
 end

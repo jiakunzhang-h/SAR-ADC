@@ -22,6 +22,6 @@ function Vdac = sbwCdac( Vin, p, capArray, digitalWord )
 
   %% calculate vdac
 
-  Vdac = - Vin + p.vRef * H;
+  Vdac = p.vcm - Vin + p.vRef * H;
 
 end

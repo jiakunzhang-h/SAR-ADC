@@ -15,7 +15,7 @@ enobResult = nan( 5, length( p.mismatchStdList ) );
 
 %% set the seed
 
-rng( 41 );
+% rng( 41 );
 
 %% generate samples
 
@@ -88,6 +88,6 @@ obj = plotDynamicPerformanceVersusMismatchSimulationResult( p, enobResult );
 
 %% export plots
 
-drawingSpectrum = sprintf( 'drawing/comparison-single-ended-adc-enob-versus-mismatch.png' );
+drawingSpectrum = sprintf( 'drawing/different-adc-architectures-enob-versus-mismatch/comparison-single-ended-adc-enob-versus-mismatch.png' );
 exportgraphics( obj, drawingSpectrum );
 

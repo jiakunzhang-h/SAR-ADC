@@ -7,7 +7,7 @@ format long g
 
 %% set the seed
 
-rng( 105 );
+rng( 225 );
 
 %% load simulation configuration and parameters
 
@@ -25,15 +25,14 @@ samples = genDifferentialSamples( p );
 
 %% generate CDAC array
 
-positiveCapArray = genCbwCdac( p );
-negativeCapArray = genCbwCdac( p );
+capArray = genDifferentialCbwCdac( p );
 
 %% run simulation
 
 for iSample = 1 : p.fftLen
   samplePositive = samples.positiveInput( iSample );
   sampleNegative = samples.negativeInput( iSample );
-  [conversionResult( iSample, : ), sampleCdacTrace] = differentialCbwConventionalSarAdc( samplePositive, sampleNegative, p, positiveCapArray, negativeCapArray );
+  [conversionResult( iSample, : ), sampleCdacTrace] = differentialCbwConventionalSarAdc( samplePositive, sampleNegative, p, capArray );
   cdacTrace( iSample, :, : ) = sampleCdacTrace;
   idealDacOutput( iSample ) = idealDAC( conversionResult( iSample, : ) );
 end
@@ -50,15 +49,19 @@ obj = plotAdcDynamicSimulationResult( p, adcDynamicPerformanceMetrics );
 
 %% plot cdac trace 
 
-randomIndex = randi( p.fftLen );
+% randomIndex = randi( p.fftLen );
+randomIndex = datasample( 1 : p.fftLen, 1 );
 randomTrace = squeeze( cdacTrace( randomIndex, :, : ) );
+diffTrace = randomTrace( :, 1 ) - randomTrace( :, 2 );
 traceObj = plotDifferentialCdacTrace( p, randomTrace, "conventional" );
-
+diffTraceObj = plotDifferentialDiffCdacTrace( p, diffTrace, "conventional" );
 %% export plots
 
 drawingSpectrum = 'drawing/differential-cbw-conventional-adc-spectrum.png';
 exportgraphics( obj, drawingSpectrum );
 drawingTrace = 'drawing/differential-cbw-conventional-cdac-conversion.png';
 exportgraphics( traceObj, drawingTrace);
+drawingDiffTrace = 'drawing/differential-cbw-conventional-cdac-diff-conversion.png';
+exportgraphics( diffTraceObj, drawingDiffTrace);
 
 

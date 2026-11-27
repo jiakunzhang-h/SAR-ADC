@@ -1,4 +1,4 @@
-function [conversionResult, cdacTrace, switchingEnergy] = differentialCbwMonotonicSarAdc( samplePositive, sampleNegative, p, positiveCapArray, negativeCapArray )
+function [conversionResult, cdacTrace, switchingEnergy] = differentialCbwMonotonicSarAdc( samplePositive, sampleNegative, p, capArray )
 
   %% SAR logic initialization
 
@@ -64,9 +64,9 @@ function [conversionResult, cdacTrace, switchingEnergy] = differentialCbwMonoton
 
     if nargout > 2
       deltaTopVoltage = cdacTrace( iCycle + 1, : ) - cdacTrace( iCycle, : );
-      oldBottomVoltage = reshape( controlSignalList( iCycle, :, : ), p.adcResolution, 2 );
-      newBottomVoltage = reshape( controlSignalList( iCycle + 1, :, : ), p.adcResolution, 2 );
-      switchingEnergy = switchingEnergy + calculateSwitchingEnergy( p, positiveCapArray, negativeCapArray, oldBottomVoltage, newBottomVoltage, deltaTopVoltage );
+      controlVoltage.lastBottomVoltage = reshape( controlSignalList( iCycle, :, : ), p.adcResolution, 2 );
+      controlVoltage.bottomVoltage = reshape( controlSignalList( iCycle + 1, :, : ), p.adcResolution, 2 );
+      switchingEnergy = switchingEnergy + calculateSwitchingEnergy( p, capArray, controlVoltage, deltaTopVoltage );
     end
 
     if iCycle == p.adcResolution
@@ -79,8 +79,8 @@ function [conversionResult, cdacTrace, switchingEnergy] = differentialCbwMonoton
 
     %% CDAC
 
-    positiveVin = differentialCbwMonotonicCdac( samplePositive, p, positiveCapArray, positiveControl );
-    negativeVin = differentialCbwMonotonicCdac( sampleNegative, p, negativeCapArray, negativeControl );
+    positiveVin = differentialCbwMonotonicCdac( samplePositive, p, capArray.positiveCapArray, positiveControl );
+    negativeVin = differentialCbwMonotonicCdac( sampleNegative, p, capArray.negativeCapArray, negativeControl );
 
   end
 

@@ -1,4 +1,4 @@
-function p = configSplitCapacitorSwitchingAlgorithm
+function p = configEnergySavingSwitchingAlgorithm
 
   %% basic specification
 

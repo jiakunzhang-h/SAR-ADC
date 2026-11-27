@@ -25,15 +25,14 @@ samples = genDifferentialSamples( p );
 
 %% generate CDAC array
 
-positiveCapArray = genMergedCapacitorCbwCdac( p );
-negativeCapArray = genMergedCapacitorCbwCdac( p );
+capArray = genMergedCapacitorCbwCdac( p );
 
 %% run simulation
 
 for iSample = 1 : p.fftLen
   samplePositive = samples.positiveInput( iSample );
   sampleNegative = samples.negativeInput( iSample );
-  [conversionResult( iSample, : ), sampleCdacTrace] = differentialMergedCapacitorSarAdc( samplePositive, sampleNegative, p, positiveCapArray, negativeCapArray );
+  [conversionResult( iSample, : ), sampleCdacTrace] = differentialMergedCapacitorSarAdc( samplePositive, sampleNegative, p, capArray );
   cdacTrace( iSample, :, : ) = sampleCdacTrace;
   idealDacOutput( iSample ) = idealDAC( conversionResult( iSample, : ) );
 end

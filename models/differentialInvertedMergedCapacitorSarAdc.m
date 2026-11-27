@@ -1,4 +1,4 @@
-function [conversionResult, cdacTrace, switchingEnergy] = differentialInvertedMergedCapacitorSarAdc( samplePositive, sampleNegative, p, positiveCapArray, negativeCapArray )
+function [conversionResult, cdacTrace, switchingEnergy] = differentialInvertedMergedCapacitorSarAdc( samplePositive, sampleNegative, p, capArray )
 
   %% SAR logic initialization
 
@@ -39,8 +39,8 @@ function [conversionResult, cdacTrace, switchingEnergy] = differentialInvertedMe
 
     %% save CDAC voltage
 
-    positiveVin = differentialInvertedMergedCapacitorCdac( samplePositive, p, positiveCapArray, positiveControl );
-    negativeVin = differentialInvertedMergedCapacitorCdac( sampleNegative, p, negativeCapArray, negativeControl );
+    positiveVin = differentialInvertedMergedCapacitorCdac( samplePositive, p, capArray.positiveCapArray, positiveControl );
+    negativeVin = differentialInvertedMergedCapacitorCdac( sampleNegative, p, capArray.negativeCapArray, negativeControl );
     if nargout > 1
       cdacTrace( iCycle + 1, 1 ) = positiveVin;
       cdacTrace( iCycle + 1, 2 ) = negativeVin;
@@ -61,9 +61,9 @@ function [conversionResult, cdacTrace, switchingEnergy] = differentialInvertedMe
 
     if nargout > 2
       deltaTopVoltage = cdacTrace( iCycle + 1, : ) - cdacTrace( iCycle, : );
-      oldBottomVoltage = reshape( controlSignalList( iCycle, :, : ), p.adcResolution, 2 );
-      newBottomVoltage = reshape( controlSignalList( iCycle + 1, :, : ), p.adcResolution, 2 );
-      switchingEnergy = switchingEnergy + calculateSwitchingEnergy( p, positiveCapArray, negativeCapArray, oldBottomVoltage, newBottomVoltage, deltaTopVoltage );
+      controlVoltage.lastBottomVoltage = reshape( controlSignalList( iCycle, :, : ), p.adcResolution, 2 );
+      controlVoltage.bottomVoltage = reshape( controlSignalList( iCycle + 1, :, : ), p.adcResolution, 2 );
+      switchingEnergy = switchingEnergy + calculateSwitchingEnergy( p, capArray, controlVoltage, deltaTopVoltage );
     end
 
     if iCycle == p.adcResolution

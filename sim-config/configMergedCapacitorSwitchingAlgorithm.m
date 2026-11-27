@@ -1,4 +1,4 @@
-function p = configMergeCapacitorSwitchingAlgorithm
+function p = configMergedCapacitorSwitchingAlgorithm
 
   %% basic specification
 

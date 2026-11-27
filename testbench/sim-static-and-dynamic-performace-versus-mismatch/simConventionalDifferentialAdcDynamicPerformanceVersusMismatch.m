@@ -56,15 +56,14 @@ for iMismatchStd = 1 : length( p.mismatchStdList )
 
   %% generate CDAC array
 
-  positiveCapArray = genCbwCdac( p );
-  negativeCapArray = genCbwCdac( p );
+  capArray = genDifferentialCbwCdac( p );
 
   %% run simulation
 
   for iSample = 1 : p.fftLen
     samplePositive = samples.positiveInput( iSample );
     sampleNegative = samples.negativeInput( iSample );
-    conversionResult( iSample, : , 4 ) = differentialCbwConventionalSarAdc( samplePositive, sampleNegative, p, positiveCapArray, negativeCapArray );
+    conversionResult( iSample, : , 4 ) = differentialCbwConventionalSarAdc( samplePositive, sampleNegative, p, capArray );
     idealDacOutput( iSample, 4 ) = idealDAC( conversionResult( iSample, :, 4 ) );
   end
 
@@ -81,5 +80,5 @@ obj = plotDynamicPerformanceVersusMismatchSimulationResult( p, enobResult );
 
 %% export plots
 
-drawingSpectrum = sprintf( 'drawing/comparison-differential-conventional-adc-enob-versus-mismatch.png' );
+drawingSpectrum = sprintf( 'drawing/different-adc-architectures-enob-versus-mismatch/comparison-differential-conventional-adc-enob-versus-mismatch.png' );
 exportgraphics( obj, drawingSpectrum );

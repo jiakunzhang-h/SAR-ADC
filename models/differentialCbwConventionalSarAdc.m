@@ -1,4 +1,4 @@
-function [conversionResult, cdacTrace, switchingEnergy] = differentialCbwConventionalSarAdc( samplePositive, sampleNegative, p, positiveCapArray, negativeCapArray )
+function [conversionResult, cdacTrace, switchingEnergy] = differentialCbwConventionalSarAdc( samplePositive, sampleNegative, p, capArray )
 
   %% SAR logic initialization
 
@@ -20,7 +20,7 @@ function [conversionResult, cdacTrace, switchingEnergy] = differentialCbwConvent
 
   if nargout > 2
     switchingEnergy = 0;
-    numCap = numel( positiveCapArray );
+    numCap = numel( capArray.positiveCapArray );
     controlSignalList = nan( p.adcResolution + 1, numCap, 2 );
     controlSignalList( 1, :, 1 ) = ones( 1, numCap ) * samplePositive;
     controlSignalList( 1, :, 2 ) = ones( 1, numCap ) * sampleNegative;
@@ -54,8 +54,8 @@ function [conversionResult, cdacTrace, switchingEnergy] = differentialCbwConvent
 
     %% CDAC
 
-    positiveVin = cbwCdac( samplePositive, p, positiveCapArray, positiveControl, 0 );
-    negativeVin = cbwCdac( sampleNegative, p, negativeCapArray, negativeControl, 1 );
+    positiveVin = cbwCdac( samplePositive, p, capArray.positiveCapArray, positiveControl, 0 );
+    negativeVin = cbwCdac( sampleNegative, p, capArray.negativeCapArray, negativeControl, 1 );
     if nargout > 1
       cdacTrace( iCycle + 1, 1 ) = positiveVin;
       cdacTrace( iCycle + 1, 2 ) = negativeVin;
@@ -72,9 +72,9 @@ function [conversionResult, cdacTrace, switchingEnergy] = differentialCbwConvent
     %% calculate the switching energy
     if nargout > 2
       deltaTopVoltage = cdacTrace( iCycle + 1, : ) - cdacTrace( iCycle, : );
-      oldBottomVoltage = reshape( controlSignalList( iCycle, :, : ), numCap, 2 );
-      newBottomVoltage = reshape( controlSignalList( iCycle + 1, :, : ), numCap, 2 );
-      switchingEnergy = switchingEnergy + calculateSwitchingEnergy( p, positiveCapArray, negativeCapArray, oldBottomVoltage, newBottomVoltage, deltaTopVoltage );
+      controlVoltage.lastBottomVoltage = reshape( controlSignalList( iCycle, :, : ), numCap, 2 );
+      controlVoltage.bottomVoltage = reshape( controlSignalList( iCycle + 1, :, : ), numCap, 2 );
+      switchingEnergy = switchingEnergy + calculateSwitchingEnergy( p, capArray, controlVoltage, deltaTopVoltage );
     end
 
     %% end the loop

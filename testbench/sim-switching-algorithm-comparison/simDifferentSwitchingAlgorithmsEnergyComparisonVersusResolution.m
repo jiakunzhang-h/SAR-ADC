@@ -5,164 +5,69 @@ close all
 clc
 format long g
 
-%% determine ADC resolution
+%% load configuration
 
-resolutionArray = 2 : 15;
+p = configDifferentSwitchingAlgorithmsEnergyVersusResolutionTest();
 
-%% allocate storage for average switching energy
+%% determine the number of resolutions and switching algorithms
 
-averageSwitchingEnergy = nan( numel( resolutionArray ), 6 );
+numResolutions = numel( p.adcResolutionArray );
+numAlgorithms = numel( p.conversionFunctionList );
+
+%% generate samples with the maximum ADC resolution
+
+maxResolutionSamples = genDifferentialRampSamplesForEnergyComparison( p.resolutionConfig( end ) );
+
+%% allocate storage for simulation data
+
+averageSwitchingEnergy = nan( numResolutions, numAlgorithms );
+switchingEnergyResult = cell( numResolutions, numAlgorithms );
+conversionResult = cell( numResolutions, numAlgorithms );
 
 %% simulate different resolutions
 
-for iResolution = 1 : numel( resolutionArray )
+for iResolution = 1 : numResolutions
 
-  %% load configuration
+  %% select simulation configuration
 
-  p = configDifferentSwitchingAlgorithmsEnergyComparisonTest();
+  currentConfig = p.resolutionConfig( iResolution );
+  numTotalHistogramSamples = p.numTotalHistogramSamples( iResolution );
 
-  %% update ADC resolution
+  %% select input samples
 
-  p.adcResolution = resolutionArray( iResolution );
+  histogramSamples.Positive = maxResolutionSamples.Positive( currentConfig.sampleIndex );
+  histogramSamples.Negative = maxResolutionSamples.Negative( currentConfig.sampleIndex );
 
-  %% update ramp offset
+  %% simulate different switching algorithms
 
-  p.rampOffset = 2 * p.vRef / 2 ^ p.adcResolution / 1000;
-  
-  %% generate samples
+  for iAlgorithm = 1 : numAlgorithms
 
-  histogramSamples = genDifferentialRampSamplesForEnergyComparison( p );
+    %% allocate storage for current switching algorithm
 
-  numTotalHistogramSamples = numel( histogramSamples.Positive );
+    conversionResult{ iResolution, iAlgorithm } = nan( numTotalHistogramSamples, currentConfig.adcResolution );
+    switchingEnergyResult{ iResolution, iAlgorithm } = nan( numTotalHistogramSamples, 1 );
 
-  %% allocate storage
+    %% generate CDAC array
 
-  switchingEnergyResult = nan( numTotalHistogramSamples, 6 );
+    capArray = p.capGenerationFunctionList{ iAlgorithm }( currentConfig );
 
-  %% Run original six switching algorithm simulations
+    %% perform ADC conversions
 
-  %% Conventional switching algorithm simulation
+    for iSample = 1 : numTotalHistogramSamples
+      [ conversionResult{ iResolution, iAlgorithm }( iSample, : ), ~, switchingEnergyResult{ iResolution, iAlgorithm }( iSample ) ] = ...
+        p.conversionFunctionList{ iAlgorithm }( histogramSamples.Positive( iSample ), histogramSamples.Negative( iSample ), currentConfig, capArray );
+    end
 
-  %% allocate storage for conventional switching algorithm simulation data
+    %% calculate average switching energy
 
-  conventionalConversionResult = nan( numTotalHistogramSamples, p.adcResolution );
+    averageSwitchingEnergy( iResolution, iAlgorithm ) = mean( switchingEnergyResult{ iResolution, iAlgorithm } );
 
-  %% generate CDAC array
-
-  positiveCapArray = genCbwCdac( p );
-  negativeCapArray = genCbwCdac( p );
-
-  %% run simulation
-
-  for iSample = 1 : numTotalHistogramSamples
-    samplePositive = histogramSamples.Positive( iSample );
-    sampleNegative = histogramSamples.Negative( iSample );
-    [conventionalConversionResult( iSample, : ), sampleCdacTrace, switchingEnergyResult( iSample, 1 )] = differentialCbwConventionalSarAdc( samplePositive, sampleNegative, p, positiveCapArray, negativeCapArray );
   end
-
-  %% Split Capacitor switching algorithm simulation
-
-  %% allocate storage for split capacitor switching algorithm simulation data
-
-  splitConversionResult = nan( numTotalHistogramSamples, p.adcResolution );
-
-  %% generate CDAC array
-
-  positiveCapArray = genSbwCdac( p );
-  negativeCapArray = genSbwCdac( p );
-
-  %% run simulation
-
-  for iSample = 1 : numTotalHistogramSamples
-    samplePositive = histogramSamples.Positive( iSample );
-    sampleNegative = histogramSamples.Negative( iSample );
-    [splitConversionResult( iSample, : ), sampleCdacTrace, switchingEnergyResult( iSample, 2 )] = differentialSbwSarAdc( samplePositive, sampleNegative, p, positiveCapArray, negativeCapArray );
-  end
-
-  %% energy saving switching algorithm simulation
-
-  %% allocate storage for energy saving switching algorithm simulation data
-
-  energySavingConversionResult = nan( numTotalHistogramSamples, p.adcResolution );
-
-  %% generate CDAC array
-
-  positiveCapArray = genEnergySavingCdac( p );
-  negativeCapArray = genEnergySavingCdac( p );
-
-  %% run simulation
-
-  for iSample = 1 : numTotalHistogramSamples
-    samplePositive = histogramSamples.Positive( iSample );
-    sampleNegative = histogramSamples.Negative( iSample );
-    [energySavingConversionResult( iSample, : ), sampleCdacTrace, switchingEnergyResult( iSample, 3 )] = differentialEnergySavingSarAdc( samplePositive, sampleNegative, p, positiveCapArray, negativeCapArray );
-  end
-
-  %% monotonic switching algorithm simulation
-
-  %% allocate storage for monotonic switching algorithm simulation data
-
-  monotonicConversionResult = nan( numTotalHistogramSamples, p.adcResolution );
-
-  %% generate CDAC array
-
-  positiveCapArray = genMonotonicCbwCdac( p );
-  negativeCapArray = genMonotonicCbwCdac( p );
-
-  %% run simulation
-
-  for iSample = 1 : numTotalHistogramSamples
-    samplePositive = histogramSamples.Positive( iSample );
-    sampleNegative = histogramSamples.Negative( iSample );
-    [monotonicConversionResult( iSample, : ), sampleCdacTrace, switchingEnergyResult( iSample, 4 )] = differentialCbwMonotonicSarAdc( samplePositive, sampleNegative, p, positiveCapArray, negativeCapArray );
-  end
-
-  %% merged capacitor switching algorithm simulation
-
-  %% allocate storage for merged capacitor switching algorithm simulation data
-
-  mergedConversionResult = nan( numTotalHistogramSamples, p.adcResolution );
-
-  %% generate CDAC array
-
-  positiveCapArray = genMergedCapacitorCbwCdac( p );
-  negativeCapArray = genMergedCapacitorCbwCdac( p );
-
-  %% run simulation
-
-  for iSample = 1 : numTotalHistogramSamples
-    samplePositive = histogramSamples.Positive( iSample );
-    sampleNegative = histogramSamples.Negative( iSample );
-    [mergedConversionResult( iSample, : ), sampleCdacTrace, switchingEnergyResult( iSample, 5 )] = differentialMergedCapacitorSarAdc( samplePositive, sampleNegative, p, positiveCapArray, negativeCapArray );
-  end
-
-  %% inverted merged capacitor switching algorithm simulation
-
-  %% allocate storage for inverted merged capacitor switching algorithm simulation data
-
-  invertedMergedConversionResult = nan( numTotalHistogramSamples, p.adcResolution );
-
-  %% generate CDAC array
-
-  positiveCapArray = genInvertedMergedCapacitorCbwCdac( p );
-  negativeCapArray = genInvertedMergedCapacitorCbwCdac( p );
-
-  %% run simulation
-
-  for iSample = 1 : numTotalHistogramSamples
-    samplePositive = histogramSamples.Positive( iSample );
-    sampleNegative = histogramSamples.Negative( iSample );
-    [invertedMergedConversionResult( iSample, : ), sampleCdacTrace, switchingEnergyResult( iSample, 6 )] = differentialInvertedMergedCapacitorSarAdc( samplePositive, sampleNegative, p, positiveCapArray, negativeCapArray );
-  end
-
-  %% calculate average switching energy
-
-  averageSwitchingEnergy( iResolution, : ) = mean( switchingEnergyResult, 1 );
 
 end
 
 %% plot simulation results
 
-obj = plotDifferentialAdcSwitchingEnergyVersusResolutionSimulationResult( p, averageSwitchingEnergy, resolutionArray );
-drawing = ['drawing/switching-algorithm-figures/switching-energy-versus-resolution-comparison.png'];
+obj = plotDifferentialAdcSwitchingEnergyVersusResolutionSimulationResult( p, averageSwitchingEnergy, p.adcResolutionArray );
+drawing = 'drawing/switching-algorithm-figures/switching-energy-versus-resolution-comparison.png';
 exportgraphics( obj, drawing );

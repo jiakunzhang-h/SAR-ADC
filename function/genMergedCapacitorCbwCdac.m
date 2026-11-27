@@ -1,4 +1,4 @@
-function capArray = genMergeCapacitorCbwCdac( p )
+function capArray = genMergedCapacitorCbwCdac( p )
 
   %% generate weight CDAC
 
@@ -10,6 +10,6 @@ function capArray = genMergeCapacitorCbwCdac( p )
 
   %% actual capacitor array
 
-   capArray = p.unitCap * normrnd( weightArray, p.mismatchStd .* sqrt( weightArray ) / p.numOfSmallestCap );
-   
+  capArray.positiveCapArray = p.unitCap * normrnd( weightArray, p.mismatchStd .* sqrt( weightArray ) / p.numOfSmallestCap );
+  capArray.negativeCapArray = p.unitCap * normrnd( weightArray, p.mismatchStd .* sqrt( weightArray ) / p.numOfSmallestCap );
 end

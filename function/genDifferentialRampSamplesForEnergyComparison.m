@@ -2,11 +2,11 @@ function samples = genDifferentialRampSamplesForEnergyComparison( p )
 
   %% calculate LSB
 
-  voltageLSB = 2 * p.vRef / 2 .^ p.adcResolution;
+  voltageLSB = 2 * p.vRef / 2 ^ p.adcResolution;
 
   %% generate ramp signal
 
-  sampleVoltage = - p.vRef + p.rampOffset : voltageLSB : p.vRef;
+  sampleVoltage = - p.vRef + voltageLSB / 4 : voltageLSB : p.vRef;
 
   %% generate differential samples
 

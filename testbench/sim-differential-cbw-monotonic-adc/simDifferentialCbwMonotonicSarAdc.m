@@ -25,15 +25,14 @@ samples = genDifferentialSamples( p );
 
 %% generate CDAC array
 
-positiveCapArray = genMonotonicCbwCdac( p );
-negativeCapArray = genMonotonicCbwCdac( p );
+capArray = genDifferentialMonotonicCbwCdac( p );
 
 %% run simulation
 
 for iSample = 1 : p.fftLen
   samplePositive = samples.positiveInput( iSample );
   sampleNegative = samples.negativeInput( iSample );
-  [conversionResult( iSample, : ), sampleCdacTrace] = differentialCbwMonotonicSarAdc( samplePositive, sampleNegative, p, positiveCapArray, negativeCapArray );
+  [conversionResult( iSample, : ), sampleCdacTrace] = differentialCbwMonotonicSarAdc( samplePositive, sampleNegative, p, capArray );
   cdacTrace( iSample, :, : ) = sampleCdacTrace;
   idealDacOutput( iSample ) = idealDAC( conversionResult( iSample, : ) );
 end
@@ -53,6 +52,8 @@ obj = plotAdcDynamicSimulationResult( p, adcDynamicPerformanceMetrics );
 randomIndex = randi( p.fftLen );
 randomTrace = squeeze( cdacTrace( randomIndex, :, : ) );
 traceObj = plotDifferentialCdacTrace( p, randomTrace, "Monotonic" );
+diffTrace = randomTrace( :, 1 ) - randomTrace( :, 2 );
+diffTraceObj = plotDifferentialDiffCdacTrace( p, diffTrace, "Monotonic" );
 
 %% export plots
 
@@ -60,5 +61,7 @@ drawingSpectrum = 'drawing/differential-cbw-monotonic-adc-spectrum.png';
 exportgraphics( obj, drawingSpectrum );
 drawingTrace = 'drawing/differential-cbw-monotonic-cdac-conversion.png';
 exportgraphics( traceObj, drawingTrace);
+drawingDiffTrace = 'drawing/differential-cbw-monotonic-cdac-diff-conversion.png';
+exportgraphics( diffTraceObj, drawingDiffTrace);
 
 

@@ -6,8 +6,8 @@ function [conversionResult, cdacTrace] = differentialBwaMonotonicSarAdc( sampleP
   if nargout > 1
     cdacTrace = nan( p.adcResolution, 2 );
   end
-  positiveControl = zeros( 1, p.adcResolution - 1 );
-  negativeControl = zeros( 1, p.adcResolution - 1 );
+  positiveControl = ones( 1, p.adcResolution - 1 );
+  negativeControl = ones( 1, p.adcResolution - 1 );
 
   % %% calculate thermal noise
   %

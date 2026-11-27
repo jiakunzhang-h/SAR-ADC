@@ -25,15 +25,14 @@ samples = genDifferentialSamples( p );
 
 %% generate CDAC array
 
-positiveCapArray = genMonotonicCbwCdac( p );
-negativeCapArray = genMonotonicCbwCdac( p );
+capArray = genDifferentialMonotonicCbwCdac( p );
 
 %% run simulation
 
 for iSample = 1 : p.fftLen
   samplePositive = samples.positiveInput( iSample );
   sampleNegative = samples.negativeInput( iSample );
-  [conversionResult( iSample, : ), sampleCdacTrace] = differentialCbwMonotonicSarAdc( samplePositive, sampleNegative, p, positiveCapArray, negativeCapArray );
+  [conversionResult( iSample, : ), sampleCdacTrace] = differentialCbwMonotonicSarAdc( samplePositive, sampleNegative, p, capArray );
   cdacTrace( iSample, :, : ) = sampleCdacTrace;
   idealDacOutput( iSample ) = idealDAC( conversionResult( iSample, : ) );
 end

@@ -2,14 +2,14 @@ function p = configSingleEndedAdcDynamicPerformanceVersusMismatchTest
 
   %% basic specification
 
-  p.adcResolution = 12;
-  p.fftLen = 16384;
+  p.adcResolution = 24;
+  p.fftLen = 4096;
   p.vRef = 1.2;
   p.fs = 10e6;
   p.randomInputFrequency = true;
   p.toneBin = 103;
   p.vcm = 0.6;
-  p.inputAmplitude = 0.5;
+  p.inputAmplitude = 0.58;
   p.k = 1.380649e-23;   
   p.temperature = 300;  
 
@@ -18,12 +18,12 @@ function p = configSingleEndedAdcDynamicPerformanceVersusMismatchTest
   p.smallestCap = 50e-15;
   p.numOfSmallestCap = 1;
   p.unitCap = p.smallestCap * p.numOfSmallestCap;
-  p.mismatchStdList = [ 0,  0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1];
+  p.mismatchStdList = [ 0.00001, 0.0001, 0.001, 0.01, 0.1 ];
   p.mismatchStd = 0.01;
   p.capPar = 0;
   p.dacVcm = 0;
-  p.mainArraySize = 6;
-  p.subArraySize = 6;
+  p.mainArraySize = 12;
+  p.subArraySize = 12;
   p.capParMain = 0;
   p.capParSub = 0;
   p.dacTopology = 'split-array_type-3';

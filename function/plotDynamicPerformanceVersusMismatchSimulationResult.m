@@ -8,16 +8,18 @@ function obj = plotDynamicPerformanceVersusMismatchSimulationResult( p, enobResu
 
   if size( enobResult, 1 ) == 5
     lineStyle = {'-o', '-x', '-^', '-s', '-d'};
+    lineColor = {'b', 'r', 'g', 'k', 'm'};
     legendText = {'BWA Architecture Type 1', 'BWA Architecture Type 2', 'BWA Architecture Type 3', 'CBW Architecture', 'SBW Architecture'};
   else
     lineStyle = {'-o', '-x', '-^', '-s'};
+    lineColor = {'b', 'r', 'g', 'm'};
     legendText = {'BWA Architecture Type 1', 'BWA Architecture Type 2', 'BWA Architecture Type 3', 'CBW Architecture'};
   end
 
   %% plot different architectures
 
   for iTopology = 1 : size( enobResult, 1 )
-    plot( p.mismatchStdList * 100, enobResult( iTopology, : ), lineStyle{ iTopology }, 'Color', 'b', 'LineWidth', 2.5, 'MarkerSize', 7, 'MarkerFaceColor', 'w', 'MarkerEdgeColor', 'b' );
+    semilogx( p.mismatchStdList, enobResult( iTopology, : ), lineStyle{ iTopology }, 'Color', lineColor{ iTopology }, 'LineWidth', 2.5, 'MarkerSize', 7, 'MarkerFaceColor', 'w', 'MarkerEdgeColor', lineColor{ iTopology } );
     hold on;
   end
 
@@ -26,8 +28,9 @@ function obj = plotDynamicPerformanceVersusMismatchSimulationResult( p, enobResu
   xlabel( 'Mismatch Standard Deviation (%)' );
   ylabel( 'ENOB ' );
   title( 'ENOB vs. Mismatch Standard Deviation Comparison' );
-
-  xlim( [min( p.mismatchStdList ) - 0.005, max( p.mismatchStdList ) + 0.005] * 100 );
+  totalEnobResult = enobResult( : );
+  ylim( [min( totalEnobResult ) * 0.95, max( totalEnobResult ) * 1.05]  );
+  xlim( [min( p.mismatchStdList ) * 0.5, max( p.mismatchStdList ) * 1.5]  );
 
   %% display legend
 

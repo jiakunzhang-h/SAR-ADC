@@ -1,4 +1,4 @@
-function [conversionResult, cdacTrace, switchingEnergy] = differentialEnergySavingSarAdc( samplePositive, sampleNegative, p, positiveCapArray, negativeCapArray )
+function [conversionResult, cdacTrace, switchingEnergy] = differentialEnergySavingSarAdc( samplePositive, sampleNegative, p, capArray )
 
   %% SAR logic initialization
 
@@ -40,8 +40,8 @@ function [conversionResult, cdacTrace, switchingEnergy] = differentialEnergySavi
 
     %% CDAC
 
-    positiveVin = differentialEnergySavingCdac( samplePositive, p, positiveCapArray, positiveControl );
-    negativeVin = differentialEnergySavingCdac( sampleNegative, p, negativeCapArray, negativeControl );
+    positiveVin = differentialEnergySavingCdac( samplePositive, p, capArray.positiveCapArray, positiveControl );
+    negativeVin = differentialEnergySavingCdac( sampleNegative, p, capArray.negativeCapArray, negativeControl );
     if nargout > 1
       cdacTrace( iCycle + 1, 1 ) = positiveVin;
       cdacTrace( iCycle + 1, 2 ) = negativeVin;
@@ -60,9 +60,9 @@ function [conversionResult, cdacTrace, switchingEnergy] = differentialEnergySavi
 
     if nargout > 2
       deltaTopVoltage = cdacTrace( iCycle + 1, : ) - cdacTrace( iCycle, : );
-      oldBottomVoltage = reshape( controlSignalList( iCycle, :, : ), 2 * p.adcResolution - 1, 2 );
-      newBottomVoltage = reshape( controlSignalList( iCycle + 1, :, : ), 2 * p.adcResolution - 1, 2 );
-      switchingEnergy = switchingEnergy + calculateSwitchingEnergy( p, positiveCapArray, negativeCapArray, oldBottomVoltage, newBottomVoltage, deltaTopVoltage );
+      controlVoltage.lastBottomVoltage = reshape( controlSignalList( iCycle, :, : ), 2 * p.adcResolution - 1, 2 );
+      controlVoltage.bottomVoltage = reshape( controlSignalList( iCycle + 1, :, : ), 2 * p.adcResolution - 1, 2 );
+      switchingEnergy = switchingEnergy + calculateSwitchingEnergy( p, capArray, controlVoltage, deltaTopVoltage );
     end
 
     %% SAR Logic

@@ -30,7 +30,7 @@ function [conversionResult, cdacTrace] = sbwSarAdc( sample, p, capArray )
 
     %% Comparator
 
-    compVout = comparator( vCompIn, 0, p );
+    compVout = comparator( vCompIn, p.vcm, p );
 
     %% SAR Logic
 
