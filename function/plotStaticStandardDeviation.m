@@ -37,7 +37,7 @@ function [dnlObj, inlObj] = plotStaticStandardDeviation( p, adcStaticPerformance
 
   xlabel( 'Code' );
   ylabel( '\sigma_{INL} (LSB)' );
-  title( 'Standard Deviation of DNL' );
+  title( 'Standard Deviation of INL' );
   statisticsText = sprintf( 'N = %d\nmismatch = %.2f %% \n comparator input referred noise = %.0f uV \n \\sigma_{INL} max = %.2f LSB', p.numMonteCarlo, p.mismatchStd * 100, p.compNoise * 1e6, max( inlStdMatrix ) );
   text( 0.001, 0.999, statisticsText, 'Units', 'normalized', 'HorizontalAlignment', 'left', 'VerticalAlignment', 'top', 'FontWeight', 'bold' );
   xlim( [0, 2 .^ p.adcResolution] );
