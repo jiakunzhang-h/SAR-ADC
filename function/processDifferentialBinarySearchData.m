@@ -1,10 +1,8 @@
-function adcStaticPerformanceMetrics = processDifferentialBinarySearchData( p, positiveCapArray, negativeCapArray )
-  %% calculate voltage LSB
+function adcStaticPerformanceMetrics = processDifferentialBinarySearchData( p, capArray, adcConversionFunction )
 
-  voltageLSB = 2 * p.vRef / 2 .^ p.adcResolution;
   %% calculate number of codes and iterations
 
-  numIterations = ceil( log2( ( p.vFS ) / ( p.voltageTolerance * voltageLSB ) ) );
+  numIterations = ceil( log2( ( 2 * p.vRef ) / ( p.voltageTolerance * p.voltageLSB ) ) );
 
   %% allocate transition voltage storage
 
@@ -16,8 +14,8 @@ function adcStaticPerformanceMetrics = processDifferentialBinarySearchData( p, p
 
     %% determine the lowest voltage and the highest voltage
 
-    lowVoltage = - p.inputAmplitude;
-    highVoltage = p.inputAmplitude;
+    lowVoltage = - p.vRef;
+    highVoltage = p.vRef;
 
     %% binary search by iteration
 
@@ -31,7 +29,7 @@ function adcStaticPerformanceMetrics = processDifferentialBinarySearchData( p, p
 
       %% run ADC conversion
 
-      conversionResult = differentialCbwMonotonicSarAdc( samplePositive, sampleNegative, p, positiveCapArray, negativeCapArray );
+      conversionResult = adcConversionFunction( samplePositive, sampleNegative, p, capArray );
       outputCode = round( idealDAC( conversionResult ) );
 
       %% update search interval
@@ -49,22 +47,24 @@ function adcStaticPerformanceMetrics = processDifferentialBinarySearchData( p, p
     transitionVoltage( iTransition ) = ( lowVoltage + highVoltage ) / 2;
 
   end
-  %% calculate DNL and INL
+  %% add the first and last transition voltage
 
-  codeWidth = diff( transitionVoltage ) ;
-  dnlResult = codeWidth / voltageLSB - 1;
-  rawInlResult = cumsum( dnlResult );
+  allTransitionVoltage = [ -p.vRef, transitionVoltage, p.vRef ];
 
-  %% the best-fit straight line
+  %% calculate DNL
 
-  fitCoefficient = polyfit( 1 : 2 .^ p.adcResolution - 2, rawInlResult, 1 );
-  inlResult = rawInlResult - fitCoefficient( 1 ) * (1 : 2 .^ p.adcResolution - 2) - fitCoefficient( 2 );
+  codeWidth = diff( allTransitionVoltage );
+  dnlResult = codeWidth / p.voltageLSB - 1;
 
-  %% save the result
+  %% calculate raw INL
+
+  inlResult = [ 0, cumsum( dnlResult ) ];
+
+  %% save code index
 
   adcStaticPerformanceMetrics.dnlResult = dnlResult;
   adcStaticPerformanceMetrics.inlResult = inlResult;
-  adcStaticPerformanceMetrics.dnlCodeIndex = 1 : length( dnlResult );
-  adcStaticPerformanceMetrics.inlCodeIndex = 1 : length( inlResult );
+  adcStaticPerformanceMetrics.dnlCodeIndex = 0 : 2 .^ p.adcResolution - 1;
+  adcStaticPerformanceMetrics.inlCodeIndex = 0 : 2 .^ p.adcResolution;
 
 end

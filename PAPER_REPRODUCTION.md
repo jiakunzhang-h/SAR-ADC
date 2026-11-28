@@ -51,22 +51,29 @@ Figure 3
 
 Figure 7
 
-![Single-ended CBW standard deviation of DNL](drawing/standard-deviation-of-single-ended-cbw-adc-dnl.png)
+![Single-ended CBW standard deviation of DNL](drawing/static-standard-deviation/standard-deviation-of-single-ended-cbw-adc-dnl.png)
 
-![Single-ended CBW standard deviation of INL](drawing/standard-deviation-of-single-ended-cbw-adc-inl.png)
+![Single-ended CBW standard deviation of INL](drawing/static-standard-deviation/standard-deviation-of-single-ended-cbw-adc-inl.png)
 
-![Single-ended SBW standard deviation of DNL](drawing/standard-deviation-of-single-ended-sbw-adc-dnl.png)
+![Single-ended SBW standard deviation of DNL](drawing/static-standard-deviation/standard-deviation-of-single-ended-sbw-adc-dnl.png)
 
-![Single-ended SBW standard deviation of INL](drawing/standard-deviation-of-single-ended-sbw-adc-inl.png)
+![Single-ended SBW standard deviation of INL](drawing/static-standard-deviation/standard-deviation-of-single-ended-sbw-adc-inl.png)
 
-![Single-ended BWA standard deviation of DNL](drawing/standard-deviation-of-single-ended-bwa-adc-dnl.png)
+![Single-ended BWA standard deviation of DNL](drawing/static-standard-deviation/standard-deviation-of-single-ended-bwa-adc-dnl.png)
 
-![Single-ended BWA standard deviation of INL](drawing/standard-deviation-of-single-ended-bwa-adc-inl.png)
+![Single-ended BWA standard deviation of INL](drawing/static-standard-deviation/standard-deviation-of-single-ended-bwa-adc-inl.png)
 
+### 6. 500-MS/s 5-bit ADC in 65-nm CMOS With Split Capacitor Array DAC
+
+Figure 10
+
+![standard deviation of DNL comparison](drawing/static-standard-deviation/standard-deviation-of-differential-sbw-adc-dnl-comparison.png)
+
+![standard deviation of INL comparison](drawing/static-standard-deviation/standard-deviation-of-differential-sbw-adc-inl-comparison.png)
 
 ## Switching Algorithms
 
-### 6. A 10-bit 50-MS/s SAR ADC With a Monotonic Capacitor Switching Procedure
+### 7. A 10-bit 50-MS/s SAR ADC With a Monotonic Capacitor Switching Procedure
 
 Figure 6
 
@@ -75,7 +82,7 @@ Figure 6
 ![Switching energy versus output code - 12-bit](drawing/switching-algorithm-figures/12bit-switching-energy-versus-output-code-comparison.png)
 
 
-### 7. Low-Power High-Performance SAR ADC with Redundancy and Digital Background Calibration
+### 8. Low-Power High-Performance SAR ADC with Redundancy and Digital Background Calibration
 
 Figure 5-3 / 5-6 / 5-8 / 5-10 / 5-12
 

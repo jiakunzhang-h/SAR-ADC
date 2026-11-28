@@ -63,5 +63,4 @@ function adcStaticPerformanceMetrics = processAdcBinarySearchData( p, capArray, 
   adcStaticPerformanceMetrics.inlResult = inlResult;
   adcStaticPerformanceMetrics.dnlCodeIndex = 0 : 2 .^ p.adcResolution - 1;
   adcStaticPerformanceMetrics.inlCodeIndex = 0 : 2 .^ p.adcResolution;
-
 end

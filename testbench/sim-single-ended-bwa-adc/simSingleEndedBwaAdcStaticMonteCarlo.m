@@ -59,8 +59,8 @@ adcStaticPerformanceMetrics.inlCodeIndex = 1 : numInlCode;
 
 %% export plots
 
-drawingDnl = 'drawing/standard-deviation-of-single-ended-bwa-adc-dnl.png';
+drawingDnl = 'drawing/static-standard-deviation/standard-deviation-of-single-ended-bwa-adc-dnl.png';
 exportgraphics( dnlObj, drawingDnl );
 
-drawingInl = 'drawing/standard-deviation-of-single-ended-bwa-adc-inl.png';
+drawingInl = 'drawing/static-standard-deviation/standard-deviation-of-single-ended-bwa-adc-inl.png';
 exportgraphics( inlObj, drawingInl );
